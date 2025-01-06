@@ -2,10 +2,11 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "start": "next start",
     "check-env": "ts-node scripts/check-env.ts",
-    "dev:check": "npm run check-env && npm run dev"
+    "dev:check": "npm run check-env && npm run dev",
+    "lint": "next lint"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

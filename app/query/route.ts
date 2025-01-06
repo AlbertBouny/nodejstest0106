@@ -1,17 +1,6 @@
-// import { db } from "@vercel/postgres";
-
-// const client = await db.connect();
-
-// async function listInvoices() {
-// 	const data = await client.sql`
-//     SELECT invoices.amount, customers.name
-//     FROM invoices
-//     JOIN customers ON invoices.customer_id = customers.id
-//     WHERE invoices.amount = 666;
-//   `;
-
-// 	return data.rows;
-// }
+export const dynamic = 'force-dynamic';
+// 或者
+export const revalidate = 0;
 
 export async function GET() {
   return Response.json({
