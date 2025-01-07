@@ -1,23 +1,24 @@
-// export const dynamic = 'force-dynamic';
-// 或者
-// export const revalidate = 0;
+import { sql } from '@vercel/postgres';
 
-// export async function GET() {
-//   return Response.json({
-//     message:
-//       'Uncomment this file and remove this line. You can delete this file when you are finished.',
-//   });
-//   try {
-//     await client.sql`BEGIN`;
-//     await seedUsers();
-//     await seedCustomers();
-//     await seedInvoices();
-//     await seedRevenue();
-//     await client.sql`COMMIT`;
+export const dynamic = 'force-dynamic';
 
-//     return Response.json({ message: 'Database seeded successfully' });
-//   } catch (error) {
-//     await client.sql`ROLLBACK`;
-//     return Response.json({ error }, { status: 500 });
-//   }
-// }
+export async function GET() {
+  try {
+    await sql`BEGIN`;
+    
+    // 添加基本的数据库初始化
+    await sql`CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL
+    )`;
+    
+    await sql`COMMIT`;
+    
+    return Response.json({ message: 'Database initialized successfully' });
+  } catch (error) {
+    await sql`ROLLBACK`;
+    return Response.json({ error: 'Failed to initialize database' }, { status: 500 });
+  }
+}
