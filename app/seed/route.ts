@@ -1,23 +1,23 @@
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 // 或者
-export const revalidate = 0;
+// export const revalidate = 0;
 
-export async function GET() {
-  return Response.json({
-    message:
-      'Uncomment this file and remove this line. You can delete this file when you are finished.',
-  });
-  // try {
-  //   await client.sql`BEGIN`;
-  //   await seedUsers();
-  //   await seedCustomers();
-  //   await seedInvoices();
-  //   await seedRevenue();
-  //   await client.sql`COMMIT`;
+// export async function GET() {
+//   return Response.json({
+//     message:
+//       'Uncomment this file and remove this line. You can delete this file when you are finished.',
+//   });
+//   try {
+//     await client.sql`BEGIN`;
+//     await seedUsers();
+//     await seedCustomers();
+//     await seedInvoices();
+//     await seedRevenue();
+//     await client.sql`COMMIT`;
 
-  //   return Response.json({ message: 'Database seeded successfully' });
-  // } catch (error) {
-  //   await client.sql`ROLLBACK`;
-  //   return Response.json({ error }, { status: 500 });
-  // }
-}
+//     return Response.json({ message: 'Database seeded successfully' });
+//   } catch (error) {
+//     await client.sql`ROLLBACK`;
+//     return Response.json({ error }, { status: 500 });
+//   }
+// }
