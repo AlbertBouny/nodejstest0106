@@ -76,7 +76,7 @@ export const authOptions: NextAuthOptions = {
 async function storeAccessToken(accessToken: string, sub?: string) {
   if (!accessToken || !sub) return;
   const expire = ONE_DAY * 30; // The number of seconds in 30 days
-  await redis.set(accessToken, sub, { ex: expire });
+  await redis.setex(accessToken, expire, sub);
 }
 async function upsertUserAndGetInfo(token: JWT, account: Account) {
   const user = await upsertUser(token, account.provider);

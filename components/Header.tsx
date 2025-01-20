@@ -1,5 +1,5 @@
 import MainHeader from "@/components/MainHeader";
-import UserAccountHeader from "@/components/UserAccountHeader";
+import { UserAccountHeader } from "@/components/UserAccountHeader";
 import { UserInfo } from "@/types/user";
 
 export default function Header({ user }: { user?: UserInfo }) {
@@ -15,11 +15,10 @@ export default function Header({ user }: { user?: UserInfo }) {
         <div>
           <UserAccountHeader
             user={{
-              username: user?.username || "",
-              avatar: user?.avatar || "",
               email: user?.email || "",
               role: user?.role || 0,
-              membershipExpire: user?.membershipExpire,
+              platform: user?.platform || "",
+              userId: user?.userId || ""
             }}
           />
         </div>
