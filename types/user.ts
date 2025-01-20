@@ -12,13 +12,10 @@ export interface RemainingParams {
 }
 
 export interface UserInfo {
-  userId: string;
-  username: string;
-  avatar?: string;
-  platform: string;
-  email: string;
-  role: Role;
-  membershipExpire?: number;
+  userId: string | null;
+  email: string | null;
+  platform: string | null;
+  role: number | null;
   accessToken?: string;
 }
 

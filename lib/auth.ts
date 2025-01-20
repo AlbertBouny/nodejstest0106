@@ -1,5 +1,4 @@
 import { ONE_DAY } from "@/lib/constants";
-import { getUserSubscriptionStatus } from "@/lib/lemonsqueezy/subscriptionFromStorage";
 import prisma from "@/lib/prisma";
 import { UserInfo } from "@/types/user";
 import { Account, NextAuthOptions, TokenSet } from "next-auth";
@@ -54,15 +53,11 @@ export const authOptions: NextAuthOptions = {
           throw new Error('User information could not be saved or retrieved.');
         }
 
-        const planRes = await getUserSubscriptionStatus({ userId: userInfo.userId, defaultUser: userInfo })
         const fullUserInfo = {
           userId: userInfo.userId,
-          username: userInfo.username,
-          avatar: userInfo.avatar,
           email: userInfo.email,
           platform: userInfo.platform,
-          role: planRes.role,
-          membershipExpire: planRes.membershipExpire,
+          role: userInfo.role,
           accessToken: account.access_token
         }
         return fullUserInfo
@@ -87,12 +82,8 @@ async function upsertUserAndGetInfo(token: JWT, account: Account) {
   const user = await upsertUser(token, account.provider);
   if (!user || !user.userId) return null;
 
-  const subscriptionStatus = await getUserSubscriptionStatus({ userId: user.userId, defaultUser: user });
-
   return {
     ...user,
-    role: subscriptionStatus.role,
-    membershipExpire: subscriptionStatus.membershipExpire,
   };
 }
 async function upsertUser(token: JWT, provider: string) {
@@ -113,15 +104,11 @@ async function upsertUser(token: JWT, provider: string) {
   return user || null;
 }
 async function getSessionUser(token: ExtendedToken): Promise<UserInfo> {
-  const planRes = await getUserSubscriptionStatus({ userId: token.userId as string });
   return {
     userId: token.userId,
-    username: token.username,
-    avatar: token.avatar,
     email: token.email,
     platform: token.platform,
-    role: planRes.role,
-    membershipExpire: planRes.membershipExpire,
+    role: token.role,
     accessToken: token.accessToken
   } as UserInfo;
 }
