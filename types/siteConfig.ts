@@ -2,18 +2,27 @@ export type AuthorsConfig = {
   name: string
   url: string
 }
+
+export type NavItem = {
+  title: string
+  href: string
+  disabled?: boolean
+  subItems?: NavItem[]
+}
+
+export type MainNavItem = NavItem
+
 export type SiteConfig = {
   name: string
   description: string
   url: string
   keywords: string[]
-  authors: AuthorsConfig[]
+  authors: Array<{
+    name: string
+    url: string
+  }>
   creator: string
   ogImage: string
-  links: {
-    twitter: string
-    github?: string
-  },
   metadataBase: URL
   themeColor: string
   icons: {
@@ -35,5 +44,11 @@ export type SiteConfig = {
     description: string
     images: string[]
     creator: string
+  },
+  mainNav: MainNavItem[]
+  links: {
+    twitter: string
+    github: string
+    docs: string
   },
 }
