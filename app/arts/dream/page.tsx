@@ -56,7 +56,7 @@ export default function DreamPage() {
       <section className="relative mx-auto flex max-w-[1200px] flex-col items-center gap-4 overflow-hidden rounded-xl py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/arts/chinese_astrology_3.jpg"
+            src="/images/arts/chinese_astrology_3_optimized.jpg"
             alt="周公解梦"
             fill
             className="object-cover brightness-50"

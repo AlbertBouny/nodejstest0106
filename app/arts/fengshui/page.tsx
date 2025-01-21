@@ -56,7 +56,7 @@ export default function FengShuiPage() {
       <section className="relative mx-auto flex max-w-[1200px] flex-col items-center gap-4 overflow-hidden rounded-xl py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/arts/feng_shui_1.jpg"
+            src="/images/arts/feng_shui_1_optimized.jpg"
             alt="风水布局"
             fill
             className="object-cover brightness-50"
@@ -240,7 +240,7 @@ export default function FengShuiPage() {
         <div className="relative overflow-hidden rounded-lg p-8">
           <div className="absolute inset-0 z-0">
             <Image
-              src="/images/arts/feng_shui_3.jpg"
+              src="/images/arts/feng_shui_3_optimized.jpg"
               alt="风水咨询"
               fill
               className="object-cover brightness-50"

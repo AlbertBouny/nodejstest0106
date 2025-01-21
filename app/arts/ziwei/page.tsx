@@ -17,7 +17,7 @@ export default function ZiWeiPage() {
       <section className="relative mx-auto flex max-w-[1200px] flex-col items-center gap-4 overflow-hidden rounded-xl py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/arts/chinese_astrology_1.jpg"
+            src="/images/arts/chinese_astrology_1_optimized.jpg"
             alt="紫微斗数星图"
             fill
             className="object-cover brightness-50"

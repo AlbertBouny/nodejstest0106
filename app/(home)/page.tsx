@@ -161,7 +161,7 @@ export default function HomePage() {
             <div className="flex gap-4 items-center">
               <div className="relative h-16 w-16 overflow-hidden rounded-full">
                 <Image
-                  src="/images/team/master_wang_1.jpg"
+                  src="/images/team/master_wang_1_optimized.jpg"
                   alt="Master Wang"
                   fill
                   className="object-cover"
