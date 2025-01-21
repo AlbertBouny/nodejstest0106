@@ -1,3 +1,5 @@
+"use client";
+
 import ContactMe from "@/components/ContactMe";
 import { siteConfig } from "@/config/site";
 import Link from "next/link";

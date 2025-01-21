@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { BsGithub, BsTwitterX, BsWechat } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
