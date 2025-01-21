@@ -1,5 +1,5 @@
-import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import SiteFooter from "@/components/site-footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -52,7 +52,7 @@ export default function RootLayout({
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
             <main className="flex-1">{children}</main>
-            <Footer />
+            <SiteFooter />
           </div>
         </ThemeProvider>
       </body>

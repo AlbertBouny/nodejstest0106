@@ -3,7 +3,7 @@
 import { siteConfig } from "@/config/site";
 import Link from "next/link";
 
-const Footer = () => {
+const SiteFooter = () => {
   return (
     <footer className="border-t">
       <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
@@ -42,4 +42,4 @@ const Footer = () => {
   );
 };
 
-export default Footer; 
+export default SiteFooter; 

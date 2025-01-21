@@ -4,8 +4,8 @@
  * @see https://weijunext.com/article/979b9033-188c-4d88-bfff-6cf74d28420d
  */
 module.exports = {
-  siteUrl: "https://www.smartexcel.cc",
-  changefreq: "daily",
+  siteUrl: "https://taoismzen.com",
+  changefreq: "weekly",
   priority: 0.7,
   exclude: ["/server-sitemap.xml", "/404"],
   generateRobotsTxt: true,
@@ -22,6 +22,10 @@ module.exports = {
   additionalPaths: async (config) => [
     // 这个版本的next-sitemap无法把app router的静态目录加载进来，所以在这里手动添加了
     await config.transform(config, "/"),
+    await config.transform(config, "/culture"),
+    await config.transform(config, "/arts"),
+    await config.transform(config, "/services"),
+    await config.transform(config, "/privacy"),
   ],
   robotsTxtOptions: {
     // additionalSitemaps: [
