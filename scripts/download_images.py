@@ -1,79 +1,106 @@
 import os
-import requests
 import time
-from typing import Dict, List
+import requests
+from pathlib import Path
 
-API_KEY = "48167373-9ff0aa78c7b8c9b5e2d35799f"
-BASE_URL = "https://pixabay.com/api/"
+ACCESS_KEY = 'cQ9WhLPPcypcngf4kBggdcXtopVjcBtseVl1mVyTKAU'
 
-def create_directories():
-    """Create necessary directories if they don't exist"""
-    base_path = "public/images"
-    dirs = ["banners", "icons", "gallery", "culture", "arts"]
-    for dir_name in dirs:
-        dir_path = os.path.join(base_path, dir_name)
-        os.makedirs(dir_path, exist_ok=True)
+image_config = {
+    'home': {
+        'hero-bg': 'chinese traditional temple',
+        'services-preview': 'meditation zen',
+    },
+    'culture': {
+        'hero': 'taichi symbol',
+        'history': 'ancient chinese architecture',
+        'concepts': 'yin yang symbol',
+        'schools': 'taoist temple',
+        'deities': 'chinese deity statue',
+        'influence': 'chinese calligraphy',
+        'classics': 'ancient chinese book',
+        'learning': 'chinese study room',
+        'ethics': 'chinese philosophy ethics meditation',
+    },
+    'arts': {
+        'hero': 'feng shui compass',
+        'ziwei': 'night sky stars',
+        'bazi': 'chinese calendar traditional',
+        'relationship': 'chinese red string fate',
+        'compatibility': 'chinese wedding ceremony traditional',
+        'fengshui': 'chinese garden traditional',
+        'naming': 'chinese calligraphy art',
+        'dream': 'moon stars night',
+        'consultation': 'meditation zen room',
+    },
+    'services': {
+        'hero': 'feng shui consultation',
+        'destiny': 'chinese fortune telling',
+        'fengshui': 'feng shui interior',
+        'relationship': 'chinese matchmaker temple',
+        'tools': 'chinese traditional tools compass',
+        'consultation': 'chinese master consultation',
+        'cases': 'feng shui transformation before after',
+    },
+    'pricing': {
+        'hero': 'chinese meditation practice',
+        'starter': 'zen garden peaceful',
+        'professional': 'taoist temple meditation',
+        'master': 'chinese master teaching',
+    },
+    'about': {
+        'hero': 'chinese traditional culture',
+        'team': 'chinese master teaching group',
+        'values': 'taoist philosophy symbols',
+        'mission': 'chinese temple sunrise',
+    },
+}
 
-def download_image(url: str, save_path: str):
-    """Download an image from URL and save it to the specified path"""
+def download_image(query: str, filename: str):
     try:
-        response = requests.get(url)
-        response.raise_for_status()
-        with open(save_path, 'wb') as f:
-            f.write(response.content)
-        print(f"Downloaded: {save_path}")
-        time.sleep(0.5)  # Rate limiting
+        # 创建目录（如果不存在）
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        
+        # 搜索图片
+        search_url = f'https://api.unsplash.com/search/photos'
+        params = {
+            'query': query,
+            'client_id': ACCESS_KEY,
+        }
+        response = requests.get(search_url, params=params)
+        data = response.json()
+        
+        if data.get('results') and len(data['results']) > 0:
+            # 获取图片URL
+            image_url = data['results'][0]['urls']['regular']
+            
+            # 下载图片
+            image_response = requests.get(image_url)
+            
+            # 保存图片
+            with open(filename, 'wb') as f:
+                f.write(image_response.content)
+            
+            print(f'Downloaded: {filename}')
+        else:
+            print(f'No results found for query: {query}')
+            
     except Exception as e:
-        print(f"Error downloading {url}: {str(e)}")
-
-def search_images(query: str, category: str = None, image_type: str = "photo", orientation: str = "horizontal", per_page: int = 3) -> Dict:
-    """Search for images on Pixabay"""
-    params = {
-        "key": API_KEY,
-        "q": query,
-        "image_type": image_type,
-        "orientation": orientation,
-        "per_page": per_page,
-        "safesearch": "true",
-    }
-    if category:
-        params["category"] = category
-
-    response = requests.get(BASE_URL, params=params)
-    return response.json()
-
-def download_category_images(category_name: str, search_terms: List[str], output_dir: str):
-    """Download images for a specific category"""
-    for term in search_terms:
-        results = search_images(term)
-        if results.get("hits"):
-            for i, image in enumerate(results["hits"]):
-                file_name = f"{term.replace(' ', '_')}_{i+1}.jpg"
-                save_path = os.path.join("public/images", output_dir, file_name)
-                download_image(image["largeImageURL"], save_path)
+        print(f'Error downloading {filename}: {str(e)}')
 
 def main():
-    create_directories()
+    # 获取项目根目录
+    root_dir = Path(__file__).parent.parent
+    
+    for category, images in image_config.items():
+        for name, query in images.items():
+            # 构建文件路径
+            filename = root_dir / 'public' / 'images' / category / f'{name}.jpg'
+            
+            # 下载图片
+            download_image(query, str(filename))
+            
+            # 等待一秒以避免速率限制
+            time.sleep(1)
 
-    # Download banner images
-    banner_terms = ["taoist temple", "yin yang symbol", "chinese meditation"]
-    download_category_images("banners", banner_terms, "banners")
-
-    # Download icon images
-    icon_terms = ["taoism symbol", "bagua symbol", "chinese calligraphy"]
-    download_category_images("icons", icon_terms, "icons")
-
-    # Download gallery images
-    gallery_terms = ["chinese temple architecture", "taoist ceremony", "chinese art"]
-    download_category_images("gallery", gallery_terms, "gallery")
-
-    # Download culture images
-    culture_terms = ["ancient chinese scroll", "taoist priest", "chinese philosophy"]
-    download_category_images("culture", culture_terms, "culture")
-
-    # Download arts images
-    arts_terms = ["bagua compass", "chinese astrology", "feng shui"]
-    download_category_images("arts", arts_terms, "arts")
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main() 

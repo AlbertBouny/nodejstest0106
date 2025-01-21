@@ -49,21 +49,23 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <div className="container py-8 sm:py-12 px-4 sm:px-6">
+    <div className="container py-8 sm:py-12 px-4 sm:px-6 animate-in">
       {/* Hero Section */}
       <div className="mb-12 sm:mb-16 text-center">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">About Us</h1>
-        <p className="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-muted-foreground">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          About Us
+        </h1>
+        <p className="mt-4 text-lg sm:text-xl md:text-2xl text-muted-foreground">
           Bridging ancient wisdom with modern understanding
         </p>
       </div>
 
       {/* Mission Section */}
-      <section id="mission" className="mb-12 sm:mb-16 scroll-mt-16">
-        <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
-          <div>
+      <section id="mission" className="mb-16 sm:mb-24 scroll-mt-16">
+        <div className="grid gap-8 md:grid-cols-2">
+          <div className="space-y-6">
             <h2 className="text-2xl sm:text-3xl font-bold">Our Mission</h2>
-            <div className="mt-4 sm:mt-6 space-y-3 sm:space-y-4 text-sm sm:text-base text-muted-foreground">
+            <div className="space-y-4 text-base sm:text-lg text-muted-foreground">
               <p>
                 Our mission is to bridge the profound wisdom of Taoist traditions with contemporary life, making ancient knowledge accessible and practical for modern seekers.
               </p>
@@ -75,28 +77,31 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="relative h-[200px] sm:h-[300px] overflow-hidden rounded-lg">
+          <div className="relative h-[300px] sm:h-[400px] overflow-hidden rounded-2xl shadow-xl">
             <Image
               src="/images/about/mission.jpg"
               alt="Traditional Taoist temple representing our mission"
               fill
-              className="object-cover"
+              className="object-cover hover:scale-105 transition-transform duration-500"
             />
           </div>
         </div>
       </section>
 
       {/* Values Section */}
-      <section className="mb-12 sm:mb-16">
-        <h2 className="text-2xl sm:text-3xl font-bold">Our Values</h2>
-        <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-8 md:grid-cols-3">
+      <section className="mb-16 sm:mb-24">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-8">Our Values</h2>
+        <div className="grid gap-6 md:grid-cols-3">
           {values.map((value) => {
             const Icon = value.icon;
             return (
-              <div key={value.title} className="rounded-lg border p-4 sm:p-6">
-                <Icon className="h-8 w-8 sm:h-12 sm:w-12 text-primary" />
-                <h3 className="mt-3 sm:mt-4 text-lg sm:text-xl font-semibold">{value.title}</h3>
-                <p className="mt-2 text-sm sm:text-base text-muted-foreground">{value.description}</p>
+              <div
+                key={value.title}
+                className="rounded-xl border bg-card p-6 card-hover gradient-border"
+              >
+                <Icon className="h-12 w-12 text-primary" />
+                <h3 className="mt-4 text-xl font-bold">{value.title}</h3>
+                <p className="mt-2 text-base text-muted-foreground">{value.description}</p>
               </div>
             );
           })}
@@ -105,24 +110,27 @@ export default function AboutPage() {
 
       {/* Expert Team Section */}
       <section id="experts" className="scroll-mt-16">
-        <h2 className="text-2xl sm:text-3xl font-bold">Our Expert Team</h2>
-        <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted-foreground">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4">Our Expert Team</h2>
+        <p className="text-lg text-muted-foreground mb-8">
           Meet our dedicated practitioners who bring decades of experience and deep understanding of Taoist arts.
         </p>
-        <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-8 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {experts.map((expert) => (
-            <div key={expert.name} className="rounded-lg border p-4 sm:p-6">
-              <div className="relative mb-3 sm:mb-4 h-[150px] sm:h-[200px] overflow-hidden rounded-lg">
+            <div
+              key={expert.name}
+              className="rounded-xl border bg-card p-6 card-hover gradient-border"
+            >
+              <div className="relative mb-4 h-[250px] overflow-hidden rounded-lg">
                 <Image
                   src={expert.image}
                   alt={expert.name}
                   fill
-                  className="object-cover"
+                  className="object-cover hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold">{expert.name}</h3>
-              <p className="text-sm sm:text-base text-primary">{expert.title}</p>
-              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
+              <h3 className="text-xl font-bold">{expert.name}</h3>
+              <p className="text-primary font-medium">{expert.title}</p>
+              <p className="mt-2 text-muted-foreground">
                 {expert.description}
               </p>
             </div>
@@ -131,11 +139,13 @@ export default function AboutPage() {
       </section>
 
       {/* Commitment Section */}
-      <section className="mt-12 sm:mt-16 rounded-lg bg-muted p-4 sm:p-8">
-        <h2 className="text-xl sm:text-2xl font-bold">Our Commitment</h2>
-        <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground">
-          We are dedicated to providing authentic guidance while maintaining the highest standards of professionalism and ethical practice. Our commitment is to help you discover practical applications of Taoist wisdom in your modern life.
-        </p>
+      <section className="mt-16 sm:mt-24">
+        <div className="rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 p-8 sm:p-12">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Our Commitment</h2>
+          <p className="text-lg text-muted-foreground">
+            We are dedicated to providing authentic guidance while maintaining the highest standards of professionalism and ethical practice. Our commitment is to help you discover practical applications of Taoist wisdom in your modern life.
+          </p>
+        </div>
       </section>
     </div>
   );

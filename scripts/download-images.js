@@ -1,140 +1,75 @@
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-const sharp = require('sharp');
+import fs from 'fs';
+import fetch from 'node-fetch';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// 使用Pixabay API
-const PIXABAY_API_KEY = ''; // 需要填入有效的API key
-const BASE_URL = 'https://pixabay.com/api/';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const IMAGE_CATEGORIES = {
-  team: [
-    { name: 'master_wang_1.jpg', query: 'chinese+master+meditation' },
-    { name: 'master_li_1.jpg', query: 'meditation+teacher+asian' },
-    { name: 'master_chen_1.jpg', query: 'feng+shui+master+asian' },
-  ],
+const ACCESS_KEY = 'cQ9WhLPPcypcngf4kBggdcXtopVjcBtseVl1mVyTKAU';
+
+const imageConfig = {
+  home: {
+    'hero-bg': 'chinese traditional temple',
+    'services-preview': 'meditation zen',
+  },
+  culture: {
+    'hero': 'taichi symbol',
+    'history': 'ancient chinese architecture',
+    'concepts': 'yin yang symbol',
+    'schools': 'taoist temple',
+    'deities': 'chinese deity statue',
+    'influence': 'chinese calligraphy',
+    'classics': 'ancient chinese book',
+    'learning': 'chinese study room',
+  },
+  arts: {
+    'hero': 'feng shui compass',
+    'ziwei': 'night sky stars',
+    'bazi': 'chinese calendar traditional',
+    'relationship': 'chinese red string fate',
+    'fengshui': 'chinese garden traditional',
+    'naming': 'chinese calligraphy art',
+    'dream': 'moon stars night',
+    'consultation': 'meditation zen room',
+  },
   services: {
-    consultation: [
-      { name: 'consultation_1.jpg', query: 'chinese+consultation+meeting' },
-      { name: 'consultation_2.jpg', query: 'feng+shui+consultation' },
-      { name: 'consultation_3.jpg', query: 'meditation+guidance+asian' },
-    ],
-    tools: [
-      { name: 'calculator_1.jpg', query: 'chinese+calculator+traditional' },
-      { name: 'compass_1.jpg', query: 'feng+shui+compass+chinese' },
-      { name: 'calendar_1.jpg', query: 'chinese+calendar+traditional' },
-    ],
-    cases: [
-      { name: 'case_study_1.jpg', query: 'feng+shui+home+interior' },
-      { name: 'case_study_2.jpg', query: 'chinese+garden+traditional' },
-      { name: 'case_study_3.jpg', query: 'meditation+space+zen' },
-    ],
+    'hero': 'feng shui consultation',
+    'destiny': 'chinese fortune telling',
+    'fengshui': 'feng shui interior',
+    'relationship': 'chinese matchmaker temple',
   },
 };
 
-async function searchImage(query) {
-  const url = `${BASE_URL}?key=${PIXABAY_API_KEY}&q=${query}&image_type=photo&orientation=horizontal&per_page=3`;
-
-  return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
-      let data = '';
-
-      response.on('data', (chunk) => {
-        data += chunk;
-      });
-
-      response.on('end', () => {
-        try {
-          const result = JSON.parse(data);
-          if (result.hits && result.hits.length > 0) {
-            resolve(result.hits[0].largeImageURL);
-          } else {
-            reject(new Error('No images found'));
-          }
-        } catch (error) {
-          reject(error);
-        }
-      });
-    }).on('error', reject);
-  });
-}
-
-async function downloadImage(url, filepath) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
-      if (response.statusCode === 200) {
-        const fileStream = fs.createWriteStream(filepath);
-        response.pipe(fileStream);
-        fileStream.on('finish', () => {
-          fileStream.close();
-          resolve(filepath);
-        });
-      } else {
-        reject(new Error(`Failed to download image: ${response.statusCode}`));
-      }
-    }).on('error', reject);
-  });
-}
-
-async function processImage(filepath) {
+async function downloadImage(query, filename) {
   try {
-    await sharp(filepath)
-      .resize(1200, 800, { fit: 'cover' })
-      .jpeg({ quality: 85 })
-      .toFile(filepath + '.processed');
+    const response = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&client_id=${ACCESS_KEY}`
+    );
+    const data = await response.json();
 
-    fs.renameSync(filepath + '.processed', filepath);
-    console.log(`Processed: ${filepath}`);
+    if (data.results && data.results.length > 0) {
+      const imageUrl = data.results[0].urls.regular;
+      const imageResponse = await fetch(imageUrl);
+      const buffer = await imageResponse.buffer();
+
+      fs.writeFileSync(filename, buffer);
+      console.log(`Downloaded: ${filename}`);
+    }
   } catch (error) {
-    console.error(`Error processing ${filepath}:`, error);
+    console.error(`Error downloading ${filename}:`, error);
   }
 }
 
-async function ensureDirectoryExists(dirPath) {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-}
-
-async function downloadAndProcessImages() {
-  if (!PIXABAY_API_KEY) {
-    console.error('Please provide a valid Pixabay API key');
-    return;
-  }
-
-  // Process team images
-  const teamDir = path.join('public', 'images', 'team');
-  await ensureDirectoryExists(teamDir);
-
-  for (const image of IMAGE_CATEGORIES.team) {
-    const filepath = path.join(teamDir, image.name);
-    try {
-      const imageUrl = await searchImage(image.query);
-      await downloadImage(imageUrl, filepath);
-      await processImage(filepath);
-      console.log(`Successfully processed: ${image.name}`);
-    } catch (error) {
-      console.error(`Error with ${image.name}:`, error);
-    }
-  }
-
-  // Process service images
-  for (const [category, images] of Object.entries(IMAGE_CATEGORIES.services)) {
-    const categoryDir = path.join('public', 'images', 'services', category);
-    await ensureDirectoryExists(categoryDir);
-
-    for (const image of images) {
-      const filepath = path.join(categoryDir, image.name);
-      try {
-        const imageUrl = await searchImage(image.query);
-        await downloadImage(imageUrl, filepath);
-        await processImage(filepath);
-        console.log(`Successfully processed: ${image.name}`);
-      } catch (error) {
-        console.error(`Error with ${image.name}:`, error);
-      }
+async function downloadAllImages() {
+  for (const [category, images] of Object.entries(imageConfig)) {
+    for (const [name, query] of Object.entries(images)) {
+      const filename = path.join(process.cwd(), 'public', 'images', category, `${name}.jpg`);
+      await downloadImage(query, filename);
+      // Wait a bit to avoid rate limiting
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
 }
 
-downloadAndProcessImages().catch(console.error); 
+downloadAllImages(); 
