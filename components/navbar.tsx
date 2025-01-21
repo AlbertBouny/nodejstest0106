@@ -17,11 +17,36 @@ interface NavItem {
   }>;
 }
 
+export const navConfig = {
+  mainNav: [
+    {
+      title: "首页",
+      href: "/",
+    },
+    {
+      title: "道家文化",
+      href: "/culture",
+    },
+    {
+      title: "玄学应用",
+      href: "/metaphysical",
+    },
+    {
+      title: "服务案例",
+      href: "/services",
+    },
+    {
+      title: "修行计划",
+      href: "/pricing",
+    },
+    {
+      title: "关于我们",
+      href: "/about",
+    },
+  ],
+}
+
 const mainNavItems: NavItem[] = [
-  {
-    title: "Home",
-    href: "/",
-  },
   {
     title: "Taoist Culture",
     href: "/culture",
@@ -69,6 +94,10 @@ const mainNavItems: NavItem[] = [
   {
     title: "About Us",
     href: "/about",
+  },
+  {
+    title: "Pricing",
+    href: "/pricing",
   },
 ];
 
