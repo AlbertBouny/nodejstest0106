@@ -55,29 +55,30 @@ export const siteConfig: SiteConfig = {
       subItems: [
         { title: "Origins & History", href: "/culture/history" },
         { title: "Core Concepts", href: "/culture/concepts" },
-        { title: "Schools & Lineages", href: "/culture/schools" },
-        { title: "Deities & Immortals", href: "/culture/deities" },
-        { title: "Cultural Impact", href: "/culture/impact" },
+        { title: "Major Schools", href: "/culture/schools" },
+        { title: "Deities", href: "/culture/deities" },
+        { title: "Cultural Influence", href: "/culture/influence" },
+        { title: "Taoist Ethics", href: "/culture/ethics" },
       ]
     },
     {
       title: "Metaphysical Arts",
       href: "/arts",
       subItems: [
-        { title: "Purple Star Astrology", href: "/arts/purple-star" },
-        { title: "Four Pillars of Destiny", href: "/arts/four-pillars" },
-        { title: "Relationship Analysis", href: "/arts/relationships" },
-        { title: "Marriage Compatibility", href: "/arts/marriage" },
-        { title: "Astrological Names", href: "/arts/names" },
-        { title: "Feng Shui", href: "/arts/feng-shui" },
-        { title: "Dream Interpretation", href: "/arts/dreams" },
+        { title: "Zi Wei Dou Shu", href: "/arts/ziwei" },
+        { title: "Ba Zi", href: "/arts/bazi" },
+        { title: "Love & Relationship", href: "/arts/relationship" },
+        { title: "Marriage Compatibility", href: "/arts/compatibility" },
+        { title: "Astrological Naming", href: "/arts/naming" },
+        { title: "Feng Shui", href: "/arts/fengshui" },
+        { title: "Dream Interpretation", href: "/arts/dream" },
       ]
     },
     {
       title: "Services",
       href: "/services",
       subItems: [
-        { title: "Online Tools", href: "/services/tools" },
+        { title: "Online Self-Service Tools", href: "/services/tools" },
         { title: "Expert Consultation", href: "/services/consultation" },
         { title: "Case Studies", href: "/services/cases" },
       ]
@@ -87,7 +88,7 @@ export const siteConfig: SiteConfig = {
       href: "/resources",
       subItems: [
         { title: "Glossary", href: "/resources/glossary" },
-        { title: "Reading List", href: "/resources/reading" },
+        { title: "Reading List", href: "/resources/readings" },
         { title: "FAQ", href: "/resources/faq" },
         { title: "Cultural Events", href: "/resources/events" },
       ]

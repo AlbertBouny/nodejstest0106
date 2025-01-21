@@ -32,13 +32,13 @@ const mainNavItems: NavItem[] = [
     ],
   },
   {
-    title: "Esoteric Tools",
+    title: "Metaphysical Arts",
     href: "/arts",
     subItems: [
       { title: "Zi Wei Dou Shu", href: "/arts/ziwei" },
-      { title: "Sheng Chen Ba Zi", href: "/arts/bazi" },
+      { title: "Ba Zi", href: "/arts/bazi" },
       { title: "Love & Relationship", href: "/arts/relationship" },
-      { title: "Marriage Compatibility", href: "/arts/marriage" },
+      { title: "Marriage Compatibility", href: "/arts/compatibility" },
       { title: "Astrological Naming", href: "/arts/naming" },
       { title: "Feng Shui", href: "/arts/fengshui" },
       { title: "Dream Interpretation", href: "/arts/dream" },
@@ -48,7 +48,7 @@ const mainNavItems: NavItem[] = [
     title: "Services",
     href: "/services",
     subItems: [
-      { title: "Online Self-Service", href: "/services/self-service" },
+      { title: "Online Self-Service Tools", href: "/services/tools" },
       { title: "Expert Consultation", href: "/services/consultation" },
       { title: "Case Studies", href: "/services/cases" },
     ],
