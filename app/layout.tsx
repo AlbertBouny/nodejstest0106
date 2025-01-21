@@ -1,3 +1,4 @@
+import { NextAuthProvider } from "@/app/providers";
 import Navbar from "@/components/navbar";
 import { SiteFooter } from "@/components/site-footer";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -5,6 +6,7 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import localFont from "next/font/local";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const fontHeading = localFont({
@@ -48,13 +50,16 @@ export default function RootLayout({
           fontHeading.variable
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="relative flex min-h-screen flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-          </div>
-        </ThemeProvider>
+        <NextAuthProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <div className="relative flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <SiteFooter />
+            </div>
+          </ThemeProvider>
+        </NextAuthProvider>
+        <Toaster />
       </body>
     </html>
   );

@@ -1,6 +1,9 @@
 "use client";
 
+import { UserAccountHeader } from "@/components/UserAccountHeader";
+import { UserInfo } from "@/types/user";
 import { ChevronDown, Globe, Menu, Search, User, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -203,6 +206,8 @@ const MobileNav = ({ isOpen, setIsOpen }: MobileNavProps) => {
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
+  const user = session?.user as UserInfo;
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -224,9 +229,22 @@ const Navbar = () => {
           <button className="rounded-full p-2 hover:bg-accent">
             <Globe className="h-5 w-5" />
           </button>
-          <button className="rounded-full p-2 hover:bg-accent">
-            <User className="h-5 w-5" />
-          </button>
+          {user ? (
+            <UserAccountHeader
+              user={{
+                email: user.email || "",
+                role: user.role || 0,
+                platform: user.platform || "",
+                userId: user.userId || ""
+              }}
+            />
+          ) : (
+            <Link href="/login">
+              <button className="rounded-full p-2 hover:bg-accent">
+                <User className="h-5 w-5" />
+              </button>
+            </Link>
+          )}
           <button
             onClick={() => setIsOpen(true)}
             className="rounded-full p-2 hover:bg-accent md:hidden"

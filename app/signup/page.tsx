@@ -1,7 +1,9 @@
 "use client"
 
+import { Captcha } from "@/components/Captcha";
+import { PasswordStrengthIndicator } from "@/components/PasswordStrengthIndicator";
 import { UserAuthForm } from "@/components/UserAuthForm";
-import { LoginFormValues, loginFormSchema } from "@/lib/validations/auth";
+import { SignupFormValues, signupFormSchema } from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,45 +11,51 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isCaptchaValid, setIsCaptchaValid] = useState(false);
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginFormSchema),
-    defaultValues: {
-      rememberMe: false,
-    },
+  } = useForm<SignupFormValues>({
+    resolver: zodResolver(signupFormSchema),
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const password = watch("password", "");
+
+  const onSubmit = async (data: SignupFormValues) => {
+    if (!isCaptchaValid) {
+      toast.error("Please verify the captcha first");
+      return;
+    }
+
     try {
-      setIsLoading(true)
-      const response = await fetch("/api/auth/login", {
+      setIsLoading(true);
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      })
+      });
 
-      const json = await response.json()
+      const json = await response.json();
 
       if (!response.ok) {
-        throw new Error(json.error || "Something went wrong")
+        throw new Error(json.error || "Something went wrong");
       }
 
-      toast.success("Logged in successfully!")
-      // Redirect to home page after successful login
-      window.location.href = "/"
+      toast.success("Account created successfully!");
+      // Redirect to login page after successful registration
+      window.location.href = "/login";
     } catch (error: any) {
-      toast.error(error.message || "Something went wrong")
+      toast.error(error.message || "Something went wrong");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex">
@@ -96,7 +104,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Section - Login Form */}
+      {/* Right Section - Sign Up Form */}
       <div className="flex-1 flex items-center justify-center p-6 sm:p-8 lg:p-8 xl:p-12 bg-background">
         <div className="w-full max-w-[400px] space-y-6">
           {/* Logo and Title */}
@@ -108,9 +116,9 @@ export default function LoginPage() {
               height={40}
               className="mx-auto"
             />
-            <h2 className="mt-4 text-2xl font-semibold text-foreground">Welcome back</h2>
+            <h2 className="mt-4 text-2xl font-semibold text-foreground">Create an account</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Please enter your details to sign in
+              Join us on a journey of spiritual discovery
             </p>
           </div>
 
@@ -129,6 +137,39 @@ export default function LoginPage() {
 
           {/* Email/Password Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-foreground mb-1.5">
+                  First name
+                </label>
+                <input
+                  {...register("firstName")}
+                  type="text"
+                  autoComplete="given-name"
+                  className="appearance-none block w-full px-3 py-2 border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm bg-background"
+                  placeholder="First name"
+                />
+                {errors.firstName && (
+                  <p className="mt-1 text-xs text-destructive">{errors.firstName.message}</p>
+                )}
+              </div>
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-foreground mb-1.5">
+                  Last name
+                </label>
+                <input
+                  {...register("lastName")}
+                  type="text"
+                  autoComplete="family-name"
+                  className="appearance-none block w-full px-3 py-2 border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm bg-background"
+                  placeholder="Last name"
+                />
+                {errors.lastName && (
+                  <p className="mt-1 text-xs text-destructive">{errors.lastName.message}</p>
+                )}
+              </div>
+            </div>
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1.5">
                 Email address
@@ -152,60 +193,79 @@ export default function LoginPage() {
               <input
                 {...register("password")}
                 type="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 className="appearance-none block w-full px-3 py-2 border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm bg-background"
-                placeholder="••••••••"
+                placeholder="Create a password"
               />
               {errors.password && (
                 <p className="mt-1 text-xs text-destructive">{errors.password.message}</p>
               )}
+              <div className="mt-2">
+                <PasswordStrengthIndicator password={password} />
+              </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  {...register("rememberMe")}
-                  type="checkbox"
-                  className="h-4 w-4 text-primary focus:ring-primary border-input rounded bg-background"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-muted-foreground">
-                  Remember me
-                </label>
-              </div>
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground mb-1.5">
+                Confirm password
+              </label>
+              <input
+                {...register("confirmPassword")}
+                type="password"
+                autoComplete="new-password"
+                className="appearance-none block w-full px-3 py-2 border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm bg-background"
+                placeholder="Confirm your password"
+              />
+              {errors.confirmPassword && (
+                <p className="mt-1 text-xs text-destructive">{errors.confirmPassword.message}</p>
+              )}
+            </div>
 
-              <Link href="/forgot-password" className="text-sm font-medium text-primary hover:text-primary/90">
-                Forgot password?
-              </Link>
+            <div className="flex items-center">
+              <input
+                {...register("terms")}
+                type="checkbox"
+                className="h-4 w-4 text-primary focus:ring-primary border-input rounded bg-background"
+              />
+              <label htmlFor="terms" className="ml-2 block text-sm text-muted-foreground">
+                I agree to the{" "}
+                <Link href="/terms" className="text-foreground hover:underline">Terms of Service</Link>
+                {" "}and{" "}
+                <Link href="/privacy" className="text-foreground hover:underline">Privacy Policy</Link>
+              </label>
+            </div>
+            {errors.terms && (
+              <p className="text-xs text-destructive">{errors.terms.message}</p>
+            )}
+
+            {/* Captcha */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-foreground mb-1.5">
+                Verify Captcha
+              </label>
+              <Captcha onValidate={setIsCaptchaValid} />
             </div>
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !isCaptchaValid}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Signing in..." : "Sign in"}
+              {isLoading ? "Creating account..." : "Create account"}
             </button>
           </form>
 
-          {/* Sign Up Link */}
+          {/* Sign In Link */}
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
-              Don't have an account?{" "}
-              <Link href="/signup" className="font-medium text-primary hover:text-primary/90">
-                Sign up for free
+              Already have an account?{" "}
+              <Link href="/login" className="font-medium text-primary hover:text-primary/90">
+                Sign in
               </Link>
             </p>
           </div>
-
-          {/* Terms */}
-          <p className="text-center text-xs text-muted-foreground">
-            By continuing, you agree to our{" "}
-            <Link href="/terms" className="text-foreground hover:underline">Terms of Service</Link>
-            {" "}and{" "}
-            <Link href="/privacy" className="text-foreground hover:underline">Privacy Policy</Link>
-          </p>
         </div>
       </div>
     </div>
   );
-}
+} 

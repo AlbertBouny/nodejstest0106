@@ -25,14 +25,17 @@ model Dialog {
 }
 
 model User {
-  id               Int     @id @default(autoincrement())
-  userId           String? @unique // sub
-  username         String?
-  avatar           String?
-  role             Int?
-  platform         String? // github google
-  email            String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  Dialog           Dialog[]
+  id        Int      @id @default(autoincrement())
+  userId    String?  @unique
+  email     String?  @unique
+  username  String?
+  firstName String?
+  lastName  String?
+  password  String?
+  avatar    String?
+  role      Int?     @default(0)
+  platform  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Dialog    Dialog[]
 }

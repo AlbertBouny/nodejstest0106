@@ -3,17 +3,28 @@ import Link from "next/link";
 
 export default function MainHeader() {
   return (
-    <Link href="/" className="flex space-x-3">
-      <Image
-        alt="TaoismZen Logo"
-        src="/logo.svg"
-        className="sm:w-12 sm:h-12 w-8 h-8 dark:invert"
-        width={32}
-        height={32}
-      />
-      <span className="sm:text-4xl text-2xl ml-2 tracking-tight font-extralight flex items-center">
-        TaoismZen
-      </span>
+    <Link
+      href="/"
+      className="flex items-center space-x-2 hover:opacity-90 transition-opacity"
+      title="Return to Homepage"
+    >
+      <div className="relative w-10 h-10 sm:w-12 sm:h-12">
+        <Image
+          alt="TaoismZen Logo"
+          src="/logo.svg"
+          className="dark:invert"
+          fill
+          priority
+        />
+      </div>
+      <div className="flex flex-col">
+        <span className="text-xl sm:text-2xl font-medium tracking-tight">
+          Taoist Wisdom
+        </span>
+        <span className="text-xs sm:text-sm text-muted-foreground">
+          探索道家智慧
+        </span>
+      </div>
     </Link>
   );
 }
