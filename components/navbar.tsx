@@ -142,28 +142,35 @@ const NavItem = ({ item, mobile = false }: NavItemProps) => {
   if (item.subItems && item.subItems.length > 0) {
     return (
       <div
-        className={`relative ${mobile ? "w-full" : "group inline-block"}`}
+        className={`${mobile ? "w-full" : "relative group inline-block"}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <button
           onClick={handleClick}
-          className={`flex items-center px-4 py-2 text-sm font-medium transition-colors ${isActive ? "text-foreground" : "text-muted-foreground"
+          className={`flex items-center justify-between w-full px-4 py-2 text-sm font-medium transition-colors ${isActive ? "text-foreground" : "text-muted-foreground"
             } hover:text-foreground`}
+          aria-expanded={isOpen}
         >
           {item.title}
-          <ChevronDown className="ml-1 h-4 w-4" />
+          <ChevronDown
+            className={`ml-1 h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+              }`}
+          />
         </button>
         {isOpen && (
           <div
-            className={`absolute z-50 min-w-[200px] rounded-md border bg-background p-2 shadow-md ${mobile ? "relative w-full" : "left-0 top-full"
+            className={`${mobile
+              ? "relative w-full bg-accent/50 rounded-md mt-1"
+              : "absolute left-0 top-full min-w-[200px] rounded-md border bg-background p-2 shadow-md"
               }`}
           >
             {item.subItems.map((subItem) => (
               <Link
                 key={subItem.href}
                 href={subItem.href}
-                className="block px-4 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+                className={`block px-4 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground ${mobile ? "hover:bg-accent/50" : ""
+                  }`}
                 onClick={() => setIsOpen(false)}
               >
                 {subItem.title}
@@ -179,7 +186,8 @@ const NavItem = ({ item, mobile = false }: NavItemProps) => {
     <Link
       href={item.href}
       className={`px-4 py-2 text-sm font-medium transition-colors ${isActive ? "text-foreground" : "text-muted-foreground"
-        } hover:text-foreground ${mobile && "block w-full"}`}
+        } hover:text-foreground ${mobile ? "block w-full" : ""}`}
+      onClick={() => mobile && setIsOpen(false)}
     >
       {item.title}
     </Link>
@@ -200,34 +208,50 @@ const MobileNav = ({ isOpen, setIsOpen }: MobileNavProps) => {
     };
 
     if (isOpen) {
+      document.body.style.overflow = 'hidden';
       window.addEventListener("keydown", handleEscape);
+    } else {
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
+      document.body.style.overflow = 'unset';
       window.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen, setIsOpen]);
 
   return (
     <div
-      className={`fixed inset-0 z-50 transform bg-background transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
+      className={`fixed inset-0 z-50 transform bg-background/95 backdrop-blur-sm transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
         }`}
     >
-      <div className="flex h-16 items-center justify-between px-4">
-        <Link href="/" className="font-bold">
+      <div className="flex h-16 items-center justify-between px-4 border-b">
+        <Link href="/" className="font-bold text-xl" onClick={() => setIsOpen(false)}>
           Taoist Wisdom
         </Link>
         <button
           onClick={() => setIsOpen(false)}
           className="rounded-full p-2 hover:bg-accent"
+          aria-label="Close menu"
         >
           <X className="h-6 w-6" />
         </button>
       </div>
-      <nav className="mt-4 px-4">
-        {mainNavItems.map((item) => (
-          <NavItem key={item.href} item={item} mobile />
-        ))}
+      <nav className="mt-4 px-4 h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="space-y-2">
+          {mainNavItems.map((item) => (
+            <NavItem key={item.href} item={item} mobile />
+          ))}
+        </div>
+        <div className="mt-8 border-t pt-4">
+          <Link
+            href="/login"
+            className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+            onClick={() => setIsOpen(false)}
+          >
+            Sign In
+          </Link>
+        </div>
       </nav>
     </div>
   );
