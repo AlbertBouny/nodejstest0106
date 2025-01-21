@@ -2,7 +2,12 @@
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { Facebook, Github, Instagram, Twitter } from "lucide-react";
+import {
+  ChatBubbleLeftIcon,
+  CodeBracketIcon,
+  GlobeAltIcon,
+  PhotoIcon
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 
@@ -16,15 +21,20 @@ const footerLinks = {
   quickLinks: [
     { title: "Taoist Culture", href: "/culture" },
     { title: "Metaphysical Arts", href: "/arts" },
-    { title: "Services", href: "/services" },
+    { title: "Our Services", href: "/services" },
     { title: "Resources", href: "/resources" },
     { title: "Sitemap", href: "/sitemap" },
   ],
   resources: [
     { title: "Glossary", href: "/resources/glossary" },
     { title: "FAQ", href: "/resources/faq" },
-    { title: "Blog", href: "/blog" },
     { title: "Events", href: "/resources/events" },
+    { title: "Reading List", href: "/resources/readings" },
+  ],
+  services: [
+    { title: "Online Tools", href: "/services/tools" },
+    { title: "Expert Consultation", href: "/services/consultation" },
+    { title: "Case Studies", href: "/services/cases" },
   ],
   legal: [
     { title: "Privacy Policy", href: "/privacy" },
@@ -37,22 +47,22 @@ const socialLinks = [
   {
     name: "Twitter",
     href: siteConfig.links.twitter,
-    icon: Twitter,
+    icon: GlobeAltIcon,
   },
   {
     name: "Facebook",
     href: "https://facebook.com/daoistculture",
-    icon: Facebook,
+    icon: ChatBubbleLeftIcon,
   },
   {
     name: "Instagram",
     href: "https://instagram.com/daoistculture",
-    icon: Instagram,
+    icon: PhotoIcon,
   },
   {
     name: "GitHub",
     href: siteConfig.links.github,
-    icon: Github,
+    icon: CodeBracketIcon,
   },
 ];
 
@@ -110,6 +120,19 @@ export function SiteFooter() {
           <h3 className="text-lg font-semibold">Resources</h3>
           <ul className="space-y-2 text-sm">
             {footerLinks.resources.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-muted-foreground hover:text-primary hover:underline"
+                >
+                  {link.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <h3 className="text-lg font-semibold">Services</h3>
+          <ul className="space-y-2 text-sm">
+            {footerLinks.services.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
