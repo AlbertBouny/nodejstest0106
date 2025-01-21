@@ -1,114 +1,243 @@
-"use client"
+"use client";
 
-import { Menu } from "lucide-react"
-import Link from "next/link"
-import * as React from "react"
+import { ChevronDown, Globe, Menu, Search, User, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
-import { Button, buttonVariants } from "@/components/ui/button"
-import { siteConfig } from "@/config/site"
-import { cn } from "@/lib/utils"
+interface NavItem {
+  title: string;
+  href: string;
+  subItems?: Array<{
+    title: string;
+    href: string;
+  }>;
+}
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = React.useState(false)
+const mainNavItems: NavItem[] = [
+  {
+    title: "Home",
+    href: "/",
+  },
+  {
+    title: "Taoist Culture",
+    href: "/culture",
+    subItems: [
+      { title: "Origins & History", href: "/culture/history" },
+      { title: "Core Concepts", href: "/culture/concepts" },
+      { title: "Major Schools", href: "/culture/schools" },
+      { title: "Deities", href: "/culture/deities" },
+      { title: "Cultural Influence", href: "/culture/influence" },
+      { title: "Taoist Ethics", href: "/culture/ethics" },
+    ],
+  },
+  {
+    title: "Esoteric Tools",
+    href: "/arts",
+    subItems: [
+      { title: "Zi Wei Dou Shu", href: "/arts/ziwei" },
+      { title: "Sheng Chen Ba Zi", href: "/arts/bazi" },
+      { title: "Love & Relationship", href: "/arts/relationship" },
+      { title: "Marriage Compatibility", href: "/arts/marriage" },
+      { title: "Astrological Naming", href: "/arts/naming" },
+      { title: "Feng Shui", href: "/arts/fengshui" },
+      { title: "Dream Interpretation", href: "/arts/dream" },
+    ],
+  },
+  {
+    title: "Services",
+    href: "/services",
+    subItems: [
+      { title: "Online Self-Service", href: "/services/self-service" },
+      { title: "Expert Consultation", href: "/services/consultation" },
+      { title: "Case Studies", href: "/services/cases" },
+    ],
+  },
+  {
+    title: "Resources",
+    href: "/resources",
+    subItems: [
+      { title: "Glossary", href: "/resources/glossary" },
+      { title: "Recommended Readings", href: "/resources/readings" },
+      { title: "FAQ", href: "/resources/faq" },
+      { title: "Cultural Events", href: "/resources/events" },
+    ],
+  },
+  {
+    title: "About Us",
+    href: "/about",
+  },
+];
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen)
+interface NavItemProps {
+  item: NavItem;
+  mobile?: boolean;
+  key?: string;
+}
+
+interface MobileNavProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+const NavItem = ({ item, mobile = false }: NavItemProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const isActive = pathname === item.href;
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  const handleMouseEnter = useCallback(() => {
+    if (!mobile) {
+      setIsOpen(true);
+    }
+  }, [mobile]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (!mobile) {
+      setIsOpen(false);
+    }
+  }, [mobile]);
+
+  const handleClick = useCallback(() => {
+    if (mobile) {
+      setIsOpen(!isOpen);
+    }
+  }, [mobile, isOpen]);
+
+  if (item.subItems && item.subItems.length > 0) {
+    return (
+      <div
+        className={`relative ${mobile ? "w-full" : "group inline-block"}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <button
+          onClick={handleClick}
+          className={`flex items-center px-4 py-2 text-sm font-medium transition-colors ${isActive ? "text-foreground" : "text-muted-foreground"
+            } hover:text-foreground`}
+        >
+          {item.title}
+          <ChevronDown className="ml-1 h-4 w-4" />
+        </button>
+        {isOpen && (
+          <div
+            className={`absolute z-50 min-w-[200px] rounded-md border bg-background p-2 shadow-md ${mobile ? "relative w-full" : "left-0 top-full"
+              }`}
+          >
+            {item.subItems.map((subItem) => (
+              <Link
+                key={subItem.href}
+                href={subItem.href}
+                className="block px-4 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+                onClick={() => setIsOpen(false)}
+              >
+                {subItem.title}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
+    <Link
+      href={item.href}
+      className={`px-4 py-2 text-sm font-medium transition-colors ${isActive ? "text-foreground" : "text-muted-foreground"
+        } hover:text-foreground ${mobile && "block w-full"}`}
+    >
+      {item.title}
+    </Link>
+  );
+};
+
+const MobileNav = ({ isOpen, setIsOpen }: MobileNavProps) => {
+  const pathname = usePathname();
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname, setIsOpen]);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener("keydown", handleEscape);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, setIsOpen]);
+
+  return (
+    <div
+      className={`fixed inset-0 z-50 transform bg-background transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+    >
+      <div className="flex h-16 items-center justify-between px-4">
+        <Link href="/" className="font-bold">
+          Taoist Wisdom
+        </Link>
+        <button
+          onClick={() => setIsOpen(false)}
+          className="rounded-full p-2 hover:bg-accent"
+        >
+          <X className="h-6 w-6" />
+        </button>
+      </div>
+      <nav className="mt-4 px-4">
+        {mainNavItems.map((item) => (
+          <NavItem key={item.href} item={item} mobile />
+        ))}
+      </nav>
+    </div>
+  );
+};
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center">
         <div className="mr-4 flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="hidden font-bold sm:inline-block">
-              {siteConfig.name}
-            </span>
+          <Link href="/" className="mr-6 flex items-center space-x-2 font-bold">
+            Taoist Wisdom
           </Link>
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            <Link
-              href="/culture"
-              className={cn(
-                "transition-colors hover:text-foreground/80",
-                "text-foreground"
-              )}
-            >
-              道教文化
-            </Link>
-            <Link
-              href="/arts"
-              className={cn(
-                "transition-colors hover:text-foreground/80",
-                "text-foreground"
-              )}
-            >
-              玄学法术
-            </Link>
-            <Link
-              href="/services"
-              className={cn(
-                "transition-colors hover:text-foreground/80",
-                "text-foreground"
-              )}
-            >
-              服务咨询
-            </Link>
+          <nav className="hidden md:flex">
+            {mainNavItems.map((item) => (
+              <NavItem key={item.href} item={item} />
+            ))}
           </nav>
         </div>
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
-          </div>
-          <nav className="flex items-center">
-            <Button
-              variant="ghost"
-              className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
-              onClick={toggleMenu}
-            >
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-            <Link
-              href="/login"
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "sm" }),
-                "px-4"
-              )}
-            >
-              登录
-            </Link>
-          </nav>
+        <div className="flex flex-1 items-center justify-end space-x-4">
+          <button className="rounded-full p-2 hover:bg-accent">
+            <Search className="h-5 w-5" />
+          </button>
+          <button className="rounded-full p-2 hover:bg-accent">
+            <Globe className="h-5 w-5" />
+          </button>
+          <button className="rounded-full p-2 hover:bg-accent">
+            <User className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="rounded-full p-2 hover:bg-accent md:hidden"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
         </div>
       </div>
-      {isOpen && (
-        <div className="md:hidden">
-          <div className="container py-4">
-            <nav className="flex flex-col space-y-4">
-              <Link
-                href="/culture"
-                className="text-sm font-medium transition-colors hover:text-foreground/80"
-                onClick={toggleMenu}
-              >
-                道教文化
-              </Link>
-              <Link
-                href="/arts"
-                className="text-sm font-medium transition-colors hover:text-foreground/80"
-                onClick={toggleMenu}
-              >
-                玄学法术
-              </Link>
-              <Link
-                href="/services"
-                className="text-sm font-medium transition-colors hover:text-foreground/80"
-                onClick={toggleMenu}
-              >
-                服务咨询
-              </Link>
-            </nav>
-          </div>
-        </div>
-      )}
+      <MobileNav isOpen={isOpen} setIsOpen={setIsOpen} />
     </header>
-  )
-}
+  );
+};
 
-export default Navbar 
+export default Navbar;
