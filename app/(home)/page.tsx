@@ -1,14 +1,53 @@
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { BookOpen, Compass, Heart, ScrollText, Star, Users } from "lucide-react"
 import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "TaoismZen - Exploring Taoist Wisdom | 探索道家智慧",
-  description: "Explore the rich traditions of Taoist philosophy and discover practical tools for self-understanding, and navigate your life with greater clarity and joy.",
-  keywords: "TaoismZen, Taoism, Taoist wisdom, Chinese philosophy, Feng Shui, Ba Zi, Zi Wei Dou Shu, spiritual practices, self-discovery, 道教, 道家, 风水, 八字, 紫微斗数",
+  title: "Taoist Wisdom | Modern Applications of Traditional Culture",
+  description: "Explore Taoist wisdom and experience traditional culture in modern life. We provide professional metaphysical services to help you find balance and harmony.",
 }
+
+const features = [
+  {
+    title: "Traditional Wisdom",
+    description: "Explore the essence of Taoist culture and its modern applications",
+    icon: ScrollText,
+    href: "/culture",
+  },
+  {
+    title: "Destiny Analysis",
+    description: "Understand your life path through BaZi and Zi Wei Dou Shu",
+    icon: Star,
+    href: "/arts/bazi",
+  },
+  {
+    title: "Feng Shui",
+    description: "Harmonize your environment's energy field for a balanced life",
+    icon: Compass,
+    href: "/arts/fengshui",
+  },
+  {
+    title: "Spiritual Guidance",
+    description: "Receive personalized guidance on your spiritual journey",
+    icon: Heart,
+    href: "/services",
+  },
+  {
+    title: "Classical Studies",
+    description: "Learn Taoist classics with clear, modern interpretations",
+    icon: BookOpen,
+    href: "/culture/classics",
+  },
+  {
+    title: "Community",
+    description: "Join our community to share experiences and insights",
+    icon: Users,
+    href: "/community",
+  },
+]
 
 export default function HomePage() {
   return (
@@ -17,7 +56,7 @@ export default function HomePage() {
       <section className="relative mx-auto flex max-w-[1200px] flex-col items-center gap-4 overflow-hidden rounded-xl py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/banners/taoist_temple_1.jpg"
+            src="/images/home/hero-bg.jpg"
             alt="Journey Into Taoism"
             fill
             className="object-cover brightness-[0.6] transition-all duration-700"
@@ -26,220 +65,222 @@ export default function HomePage() {
         </div>
         <div className="relative z-10 text-white animate-fade-in">
           <h1 className="text-center text-4xl font-bold leading-tight tracking-tighter md:text-6xl lg:leading-[1.1] text-balance">
-            Journey Into the Heart of Taoism
+            Journey Into Taoist Wisdom
+            <br />
+            <span className="text-3xl md:text-4xl opacity-90">Finding Balance & Harmony in Life</span>
           </h1>
           <p className="mt-6 max-w-[750px] text-center text-lg sm:text-xl text-balance">
-            Explore the rich traditions of Taoist philosophy and discover practical tools for self-understanding, and navigate your life with greater clarity and joy.
+            Where ancient wisdom meets modern living. Let us guide you on an enlightening journey of self-discovery and spiritual growth.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/culture"
               className={cn(buttonVariants({ size: "lg" }), "glass-effect hover:bg-primary/90 transition-all duration-300")}
-              title="Learn about core principles"
+              title="Learn about Taoist culture"
             >
-              Explore Taoist Culture
+              Begin Your Journey
             </Link>
             <Link
               href="/services"
               className={cn(buttonVariants({ variant: "outline", size: "lg" }), "glass-effect hover:bg-white/10 transition-all duration-300")}
-              title="Receive personalized guidance"
+              title="Get personalized guidance"
             >
-              Discover Our Services
+              Book Consultation
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Brief Introduction - Enhanced with animations and improved typography */}
-      <section className="mx-auto max-w-[1200px] py-16 animate-slide-up">
-        <div className="grid gap-12 md:grid-cols-2 items-center">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-balance">Welcome to Daoist Pathways - Your Gateway to Taoist Wisdom</h2>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              We invite you to explore the fascinating world of Taoism, through ancient traditions that emphasize harmony, balance, and self-discovery. Our goal is to present these profound concepts in a way that is engaging, accessible, and culturally sensitive, providing you with practical tools for navigating your unique life journey.
+      {/* Features Grid */}
+      <section className="mx-auto max-w-[1200px] py-16">
+        <h2 className="text-3xl font-bold text-center mb-12">Explore Our Services</h2>
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature) => {
+            const Icon = feature.icon
+            return (
+              <Link
+                key={feature.title}
+                href={feature.href}
+                className="group relative overflow-hidden rounded-xl border bg-card p-6 hover:shadow-lg transition-all duration-300"
+              >
+                <div className="flex gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                    <Icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">{feature.title}</h3>
+                    <p className="mt-2 text-muted-foreground text-sm">{feature.description}</p>
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* Services Preview Section */}
+      <section className="mx-auto max-w-[1200px] py-16 rounded-xl overflow-hidden relative">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/home/services-preview.jpg"
+            alt="Our Services"
+            fill
+            className="object-cover brightness-[0.8]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-background/50" />
+        </div>
+        <div className="relative z-10 px-6">
+          <div className="max-w-[600px] mb-12">
+            <h2 className="text-3xl font-bold mb-4">Professional Services</h2>
+            <p className="text-lg text-muted-foreground">
+              Discover our comprehensive metaphysical services designed to help you understand yourself better, plan your life path, and create harmonious environments.
             </p>
           </div>
-          <div className="relative h-[400px] rounded-xl overflow-hidden shadow-lg">
-            <Image
-              src="/images/culture/ancient_chinese_scroll_1.jpg"
-              alt="Taoist Wisdom"
-              fill
-              className="object-cover transition-transform duration-700 hover:scale-105"
-            />
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {/* Service Card 1 */}
+            <div className="group relative overflow-hidden rounded-xl border bg-background/50 backdrop-blur-sm p-6 hover:bg-background/60 transition-all duration-300">
+              <div className="flex flex-col gap-4">
+                <h3 className="text-xl font-semibold">Personal Readings</h3>
+                <p className="text-muted-foreground flex-1 leading-relaxed">
+                  Gain deep insights into your life path through BaZi and Zi Wei Dou Shu analysis.
+                </p>
+                <Link
+                  href="/services"
+                  className={cn(buttonVariants({ variant: "outline" }), "group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300")}
+                >
+                  Learn More
+                </Link>
+              </div>
+            </div>
+
+            {/* Service Card 2 */}
+            <div className="group relative overflow-hidden rounded-xl border bg-background/50 backdrop-blur-sm p-6 hover:bg-background/60 transition-all duration-300">
+              <div className="flex flex-col gap-4">
+                <h3 className="text-xl font-semibold">Feng Shui Consultation</h3>
+                <p className="text-muted-foreground flex-1 leading-relaxed">
+                  Professional assessment and guidance for optimizing your living or working space.
+                </p>
+                <Link
+                  href="/services"
+                  className={cn(buttonVariants({ variant: "outline" }), "group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300")}
+                >
+                  Book Now
+                </Link>
+              </div>
+            </div>
+
+            {/* Service Card 3 */}
+            <div className="group relative overflow-hidden rounded-xl border bg-background/50 backdrop-blur-sm p-6 hover:bg-background/60 transition-all duration-300">
+              <div className="flex flex-col gap-4">
+                <h3 className="text-xl font-semibold">Spiritual Guidance</h3>
+                <p className="text-muted-foreground flex-1 leading-relaxed">
+                  One-on-one guidance to help you progress on your spiritual path and achieve inner harmony.
+                </p>
+                <Link
+                  href="/services"
+                  className={cn(buttonVariants({ variant: "outline" }), "group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300")}
+                >
+                  Start Now
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Core Content Highlights - Enhanced with improved card design */}
-      <section className="mx-auto max-w-[1200px] py-16 animate-slide-up">
-        <h2 className="text-4xl font-bold text-center mb-16 text-balance">Explore Our Core Areas of Focus</h2>
-        <div className="grid gap-8 md:grid-cols-3">
-          {/* Taoist Culture */}
-          <div className="group flex flex-col gap-4 rounded-xl border p-6 transition-all duration-300 hover:shadow-lg hover:border-primary/20 bg-card">
-            <div className="relative h-48 overflow-hidden rounded-lg">
-              <Image
-                src="/images/culture/chinese_temple_1.jpg"
-                alt="Taoist Culture"
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-            <h3 className="text-2xl font-bold text-balance">Delve Deeper into Taoist Culture</h3>
-            <p className="text-muted-foreground flex-1 leading-relaxed">
-              Explore the rich history, key principles, core beliefs, and the spiritual practices of the Taoist tradition
-            </p>
-            <Link
-              href="/culture"
-              className={cn(buttonVariants({ variant: "outline" }), "group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300")}
-            >
-              Explore Our Culture Section
-            </Link>
-          </div>
-
-          {/* Esoteric Tools */}
-          <div className="group flex flex-col gap-4 rounded-xl border p-6 transition-all duration-300 hover:shadow-lg hover:border-primary/20 bg-card">
-            <div className="relative h-48 overflow-hidden rounded-lg">
-              <Image
-                src="/images/arts/bagua_compass_1.jpg"
-                alt="Esoteric Tools"
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-            <h3 className="text-2xl font-bold text-balance">Unlock The Power of Esoteric Practices</h3>
-            <p className="text-muted-foreground flex-1 leading-relaxed">
-              Discover ancient techniques like Ba Zi, Zi Wei Dou Shu, Feng Shui, and Dream Interpretation, and learn how they can enhance self-awareness.
-            </p>
-            <Link
-              href="/arts"
-              className={cn(buttonVariants({ variant: "outline" }), "group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300")}
-            >
-              Explore Our Tools
-            </Link>
-          </div>
-
-          {/* Services */}
-          <div className="group flex flex-col gap-4 rounded-xl border p-6 transition-all duration-300 hover:shadow-lg hover:border-primary/20 bg-card">
-            <div className="relative h-48 overflow-hidden rounded-lg">
-              <Image
-                src="/images/services/consultation_1.jpg"
-                alt="Personalized Services"
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-            <h3 className="text-2xl font-bold text-balance">Get Personalized Guidance</h3>
-            <p className="text-muted-foreground flex-1 leading-relaxed">
-              Discover our consultation services, designed to offer you practical advice, and to support you in applying the wisdom of Taoism to your daily life.
-            </p>
-            <Link
-              href="/services"
-              className={cn(buttonVariants({ variant: "outline" }), "group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300")}
-            >
-              Book A Consultation
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Building Section - Enhanced with improved testimonial design */}
+      {/* Trust Building Section */}
       <section className="mx-auto max-w-[1200px] py-16 rounded-xl bg-accent/5 animate-slide-up">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-6 text-balance">Trusted Guidance From Experts In The Field</h2>
-          <p className="text-muted-foreground text-lg">Learn from practitioners with deep understanding of Taoist traditions</p>
+          <h2 className="text-3xl font-bold mb-4">Expert Guidance</h2>
+          <p className="text-muted-foreground text-lg">
+            Our team of experienced practitioners and scholars is dedicated to providing you with the highest quality guidance
+          </p>
         </div>
-        <div className="grid gap-8 md:grid-cols-2 px-6">
-          {/* Testimonial */}
+        <div className="grid gap-8 md:grid-cols-3 px-6">
+          {/* Expert 1 */}
           <div className="rounded-xl border bg-card p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
             <div className="flex flex-col gap-6">
-              <p className="text-lg italic leading-relaxed">"The insights I gained through the consultations have been transformative. The practitioners here truly understand how to make ancient wisdom relevant to modern life."</p>
-              <p className="font-semibold text-primary">- Sarah Chen, Business Owner</p>
-            </div>
-          </div>
-          {/* Expert Bio */}
-          <div className="rounded-xl border bg-card p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
-            <div className="flex gap-6 items-start">
-              <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-primary/20">
+              <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-primary/20 mx-auto">
                 <Image
-                  src="/images/team/master_wang_1_optimized.jpg"
-                  alt="Master Wang"
+                  src="/images/team/master_1.jpg"
+                  alt="Master Chen"
                   fill
                   className="object-cover"
                 />
               </div>
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold">Master Wang</h3>
-                <p className="text-muted-foreground leading-relaxed">30+ years of experience in Taoist practices and consultation</p>
-                <p className="text-sm text-muted-foreground">Specializing in Ba Zi and Feng Shui analysis</p>
+              <div className="text-center">
+                <h3 className="text-xl font-bold">Master Chen</h3>
+                <p className="text-sm text-muted-foreground mt-1">Taoist Scholar</p>
+                <p className="text-muted-foreground mt-2">
+                  30 years of experience in Taoist studies and modern applications
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Expert 2 */}
+          <div className="rounded-xl border bg-card p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="flex flex-col gap-6">
+              <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-primary/20 mx-auto">
+                <Image
+                  src="/images/team/master_2.jpg"
+                  alt="Dr. Li"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="text-center">
+                <h3 className="text-xl font-bold">Dr. Li</h3>
+                <p className="text-sm text-muted-foreground mt-1">TCM Expert</p>
+                <p className="text-muted-foreground mt-2">
+                  Specialist in Traditional Chinese Medicine and holistic wellness
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Expert 3 */}
+          <div className="rounded-xl border bg-card p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="flex flex-col gap-6">
+              <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-primary/20 mx-auto">
+                <Image
+                  src="/images/team/master_3.jpg"
+                  alt="Master Zhang"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="text-center">
+                <h3 className="text-xl font-bold">Master Zhang</h3>
+                <p className="text-sm text-muted-foreground mt-1">Metaphysics Expert</p>
+                <p className="text-muted-foreground mt-2">
+                  Master practitioner of BaZi, Zi Wei Dou Shu, and Feng Shui
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stay Engaged Section - Enhanced with improved article cards */}
-      <section className="mx-auto max-w-[1200px] py-16 animate-slide-up">
-        <h2 className="text-4xl font-bold text-center mb-16 text-balance">Stay Informed With Our Latest Insights</h2>
-        <div className="grid gap-12 md:grid-cols-2">
-          {/* Recent Articles */}
-          <div className="space-y-8">
-            <h3 className="text-2xl font-bold">Latest Articles</h3>
-            <div className="space-y-6">
-              <Link href="/blog/understanding-qi" className="block group">
-                <div className="rounded-xl border p-6 transition-all duration-300 hover:shadow-md hover:border-primary/20 bg-card">
-                  <h4 className="text-xl font-semibold group-hover:text-primary transition-colors duration-300">Understanding Qi: The Vital Force in Taoism</h4>
-                  <p className="mt-3 text-muted-foreground leading-relaxed">Explore the concept of Qi and its role in Taoist practices...</p>
-                </div>
-              </Link>
-              <Link href="/blog/feng-shui-basics" className="block group">
-                <div className="rounded-xl border p-6 transition-all duration-300 hover:shadow-md hover:border-primary/20 bg-card">
-                  <h4 className="text-xl font-semibold group-hover:text-primary transition-colors duration-300">Essential Feng Shui Principles for Modern Living</h4>
-                  <p className="mt-3 text-muted-foreground leading-relaxed">Learn how to apply Feng Shui principles in your home...</p>
-                </div>
-              </Link>
-            </div>
-          </div>
-
-          {/* Newsletter Signup */}
-          <div className="rounded-xl border p-8 bg-card shadow-sm">
-            <h3 className="text-2xl font-bold mb-6">Subscribe to Our Newsletter</h3>
-            <p className="text-muted-foreground mb-8 leading-relaxed">
-              Receive monthly insights on Taoist wisdom, practical tips, and exclusive content delivered directly to your inbox.
-            </p>
+      {/* Call to Action Section */}
+      <section className="mx-auto max-w-[1200px] py-16 text-center">
+        <div className="rounded-xl border bg-accent/5 p-12">
+          <h2 className="text-3xl font-bold mb-4">Begin Your Journey</h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-[600px] mx-auto">
+            Whether you're new to Taoist practices or seeking to deepen your understanding, we have the perfect guidance for your path.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/newsletter"
-              className={cn(buttonVariants({ size: "lg" }), "w-full justify-center")}
+              href="/pricing"
+              className={cn(buttonVariants({ size: "lg" }), "bg-primary text-primary-foreground hover:bg-primary/90")}
             >
-              Subscribe Now
+              View Programs
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Final Call to Action - Enhanced with glass effect */}
-      <section className="mx-auto max-w-[1200px] text-center animate-slide-up">
-        <div className="relative overflow-hidden rounded-xl p-12">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/banners/chinese_meditation_1.jpg"
-              alt="Begin Your Journey"
-              fill
-              className="object-cover brightness-[0.4] transition-all duration-700"
-            />
-          </div>
-          <div className="relative z-10 text-white">
-            <h2 className="mb-6 text-3xl font-bold text-balance">Begin Your Journey into Taoist Wisdom</h2>
-            <p className="mb-8 text-lg max-w-2xl mx-auto text-balance">
-              Let us guide you through the profound teachings of Taoism and help you find balance in modern life
-            </p>
             <Link
-              href="/culture"
-              className={cn(
-                buttonVariants({ size: "lg" }),
-                "glass-effect hover:bg-primary/90 transition-all duration-300"
-              )}
+              href="/contact"
+              className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
             >
-              Start Exploring
+              Contact Us
             </Link>
           </div>
         </div>

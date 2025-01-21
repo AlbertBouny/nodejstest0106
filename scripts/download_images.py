@@ -3,104 +3,133 @@ import time
 import requests
 from pathlib import Path
 
-ACCESS_KEY = 'cQ9WhLPPcypcngf4kBggdcXtopVjcBtseVl1mVyTKAU'
+ACCESS_KEY = "YOUR_UNSPLASH_ACCESS_KEY"
 
 image_config = {
-    'home': {
-        'hero-bg': 'chinese traditional temple',
-        'services-preview': 'meditation zen',
+    "home": {
+        "hero": {
+            "query": "chinese traditional temple architecture",
+            "filename": "public/images/home/hero-bg.jpg"
+        },
+        "services_preview": {
+            "query": "chinese meditation zen garden",
+            "filename": "public/images/home/services-preview.jpg"
+        },
+        "team": [
+            {
+                "query": "asian senior master meditation",
+                "filename": "public/images/team/master_1.jpg"
+            },
+            {
+                "query": "chinese traditional medicine doctor",
+                "filename": "public/images/team/master_2.jpg"
+            },
+            {
+                "query": "feng shui master consultation",
+                "filename": "public/images/team/master_3.jpg"
+            }
+        ]
     },
-    'culture': {
-        'hero': 'taichi symbol',
-        'history': 'ancient chinese architecture',
-        'concepts': 'yin yang symbol',
-        'schools': 'taoist temple',
-        'deities': 'chinese deity statue',
-        'influence': 'chinese calligraphy',
-        'classics': 'ancient chinese book',
-        'learning': 'chinese study room',
-        'ethics': 'chinese philosophy ethics meditation',
+    "auth": {
+        "login": {
+            "query": "chinese ink painting landscape peaceful",
+            "filename": "public/images/auth/login-bg.jpg"
+        },
+        "signup": {
+            "query": "chinese calligraphy art meditation",
+            "filename": "public/images/auth/signup-bg.jpg"
+        }
     },
-    'arts': {
-        'hero': 'feng shui compass',
-        'ziwei': 'night sky stars',
-        'bazi': 'chinese calendar traditional',
-        'relationship': 'chinese red string fate',
-        'compatibility': 'chinese wedding ceremony traditional',
-        'fengshui': 'chinese garden traditional',
-        'naming': 'chinese calligraphy art',
-        'dream': 'moon stars night',
-        'consultation': 'meditation zen room',
+    "services": {
+        "tools": [
+            {
+                "query": "chinese fortune telling tools",
+                "filename": "public/images/services/tools/bazi-calc.jpg"
+            },
+            {
+                "query": "chinese name calligraphy art",
+                "filename": "public/images/services/tools/name-analysis.jpg"
+            },
+            {
+                "query": "chinese zodiac fortune telling",
+                "filename": "public/images/services/tools/daily-fortune.jpg"
+            }
+        ],
+        "cases": [
+            {
+                "query": "feng shui home transformation",
+                "filename": "public/images/services/cases/fengshui-case-1.jpg"
+            },
+            {
+                "query": "chinese traditional office design",
+                "filename": "public/images/services/cases/fengshui-case-2.jpg"
+            }
+        ]
     },
-    'services': {
-        'hero': 'feng shui consultation',
-        'destiny': 'chinese fortune telling',
-        'fengshui': 'feng shui interior',
-        'relationship': 'chinese matchmaker temple',
-        'tools': 'chinese traditional tools compass',
-        'consultation': 'chinese master consultation',
-        'cases': 'feng shui transformation before after',
-    },
-    'pricing': {
-        'hero': 'chinese meditation practice',
-        'starter': 'zen garden peaceful',
-        'professional': 'taoist temple meditation',
-        'master': 'chinese master teaching',
-    },
-    'about': {
-        'hero': 'chinese traditional culture',
-        'team': 'chinese master teaching group',
-        'values': 'taoist philosophy symbols',
-        'mission': 'chinese temple sunrise',
-    },
+    "pricing": {
+        "hero": {
+            "query": "zen garden meditation stone",
+            "filename": "public/images/pricing/hero.jpg"
+        },
+        "tiers": [
+            {
+                "query": "chinese meditation beginner peaceful",
+                "filename": "public/images/pricing/starter.jpg"
+            },
+            {
+                "query": "taichi practice in nature",
+                "filename": "public/images/pricing/professional.jpg"
+            },
+            {
+                "query": "chinese master teaching meditation",
+                "filename": "public/images/pricing/master.jpg"
+            }
+        ]
+    }
 }
 
-def download_image(query: str, filename: str):
+def download_image(query, filename):
     try:
-        # 创建目录（如果不存在）
+        # Create directory if it doesn't exist
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         
-        # 搜索图片
-        search_url = f'https://api.unsplash.com/search/photos'
-        params = {
-            'query': query,
-            'client_id': ACCESS_KEY,
-        }
-        response = requests.get(search_url, params=params)
-        data = response.json()
+        # Construct the Unsplash API URL
+        url = f"https://api.unsplash.com/photos/random?query={query}&orientation=landscape"
+        headers = {"Authorization": f"Client-ID {ACCESS_KEY}"}
         
-        if data.get('results') and len(data['results']) > 0:
-            # 获取图片URL
-            image_url = data['results'][0]['urls']['regular']
-            
-            # 下载图片
-            image_response = requests.get(image_url)
-            
-            # 保存图片
-            with open(filename, 'wb') as f:
-                f.write(image_response.content)
-            
-            print(f'Downloaded: {filename}')
-        else:
-            print(f'No results found for query: {query}')
-            
+        # Get image URL from Unsplash
+        response = requests.get(url, headers=headers)
+        if response.status_code != 200:
+            print(f"Error getting image URL for {query}: {response.status_code}")
+            return
+        
+        image_url = response.json()["urls"]["regular"]
+        
+        # Download the image
+        image_response = requests.get(image_url)
+        if image_response.status_code != 200:
+            print(f"Error downloading image for {query}: {image_response.status_code}")
+            return
+        
+        # Save the image
+        with open(filename, "wb") as f:
+            f.write(image_response.content)
+        
+        print(f"Successfully downloaded: {filename}")
+        
     except Exception as e:
-        print(f'Error downloading {filename}: {str(e)}')
+        print(f"Error downloading {query}: {str(e)}")
 
-def main():
-    # 获取项目根目录
-    root_dir = Path(__file__).parent.parent
-    
-    for category, images in image_config.items():
-        for name, query in images.items():
-            # 构建文件路径
-            filename = root_dir / 'public' / 'images' / category / f'{name}.jpg'
-            
-            # 下载图片
-            download_image(query, str(filename))
-            
-            # 等待一秒以避免速率限制
-            time.sleep(1)
+def download_all_images():
+    for category, items in image_config.items():
+        for item_name, item_data in items.items():
+            if isinstance(item_data, list):
+                for item in item_data:
+                    download_image(item["query"], item["filename"])
+                    time.sleep(1)  # Rate limiting
+            else:
+                download_image(item_data["query"], item_data["filename"])
+                time.sleep(1)  # Rate limiting
 
-if __name__ == '__main__':
-    main() 
+if __name__ == "__main__":
+    download_all_images() 

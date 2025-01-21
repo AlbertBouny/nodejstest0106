@@ -1,156 +1,206 @@
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { Check } from "lucide-react"
+import { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
+
+export const metadata: Metadata = {
+  title: "修行计划 | 选择您的成长之路",
+  description: "探索我们的修行计划，从入门到精通，为您提供全面的道家文化学习和个人成长指导。",
+}
 
 const tiers = [
   {
-    name: "Beginner Path",
-    id: "starter",
-    href: "/signup",
-    price: { monthly: "$99" },
-    description: "Start your journey into Taoist wisdom",
+    name: "修行入门",
+    nameEn: "Beginner Path",
+    price: "¥299",
+    description: "适合初次接触道家文化的朋友",
     features: [
-      "Basic Taoist Theory Learning",
-      "Weekly Online Guidance",
-      "Basic Meditation Course",
-      "Taoist Classics Introduction",
-      "Community Forum Access",
+      "基础道家理论课程",
+      "每月1次在线指导",
+      "基础打坐冥想教学",
+      "入门风水知识",
+      "社区讨论组访问权限",
     ],
+    image: "/images/pricing/starter.jpg",
+    href: "/checkout?tier=starter",
   },
   {
-    name: "Cultivation Path",
-    id: "professional",
-    href: "/signup",
-    price: { monthly: "$299" },
-    description: "Deepen your Taoist practice and understanding",
+    name: "修真进阶",
+    nameEn: "Cultivation Path",
+    price: "¥599",
+    description: "适合想深入学习的修行者",
     features: [
-      "All Beginner Features",
-      "3x Weekly One-on-One Guidance",
-      "Advanced Meditation Course",
-      "In-depth Taoist Classics Study",
-      "Feng Shui & I-Ching Guidance",
-      "Tai Chi Wellness Course",
-      "Private Cultivation Community",
+      "进阶道家理论课程",
+      "每月2次一对一指导",
+      "高级打坐冥想教学",
+      "风水布局指导",
+      "八字基础分析",
+      "专属修行社群",
+      "线上工作坊参与",
     ],
+    image: "/images/pricing/professional.jpg",
+    href: "/checkout?tier=professional",
+    popular: true,
   },
   {
-    name: "Master Path",
-    id: "enterprise",
-    href: "/signup",
-    price: { monthly: "$999" },
-    description: "Become a Taoist wisdom inheritor",
+    name: "道家宗师",
+    nameEn: "Master Path",
+    price: "¥999",
+    description: "为追求更高境界的修行者准备",
     features: [
-      "All Cultivation Features",
-      "Unlimited One-on-One Guidance",
-      "Master-Level Meditation",
-      "Complete Taoist Scripture Study",
-      "Advanced Feng Shui Consulting",
-      "Private Tai Chi Instruction",
-      "Taoist Retreat Access",
-      "Annual Spiritual Journey",
-      "Certified Teacher Qualification",
+      "完整道家理论体系",
+      "无限次一对一指导",
+      "宗师级冥想教学",
+      "风水高级布局",
+      "八字精进解读",
+      "紫微斗数基础",
+      "专属修行社群",
+      "线下工作坊优先",
+      "道家经典深度解读",
     ],
+    image: "/images/pricing/master.jpg",
+    href: "/checkout?tier=master",
+  },
+]
+
+const faqs = [
+  {
+    question: "如何选择适合我的计划？",
+    answer: "我们建议从您当前的修行水平和需求出发。入门计划适合初学者，进阶计划适合有一定基础的修行者，宗师计划则为深度学习者准备。",
+  },
+  {
+    question: "课程内容包括哪些？",
+    answer: "课程涵盖道家理论、打坐冥想、风水布局、八字分析等多个方面，每个级别都有相应深度的内容。",
+  },
+  {
+    question: "可以更换或升级计划吗？",
+    answer: "是的，您可以随时升级到更高级别的计划。如需更改，请联系我们的客服团队。",
+  },
+  {
+    question: "有退款政策吗？",
+    answer: "我们提供7天内无条件退款保证，让您可以安心体验我们的服务。",
   },
 ]
 
 export default function PricingPage() {
   return (
-    <div className="py-12 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Choose Your Path of Cultivation
-          </h1>
-          <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-muted-foreground">
-            Follow the natural way, progress step by step. Choose the path that best suits your spiritual journey.
-          </p>
-        </div>
-        <div className="isolate mx-auto mt-8 sm:mt-16 grid max-w-md grid-cols-1 gap-y-6 sm:gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 xl:gap-x-12">
-          {tiers.map((tier) => (
-            <div
-              key={tier.id}
-              className="relative rounded-3xl p-6 sm:p-8 ring-1 ring-muted bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-colors duration-300"
-            >
-              {tier.id === "professional" && (
-                <div className="absolute -top-3 left-0 right-0 mx-auto w-fit px-3 py-1 rounded-full text-xs font-medium bg-primary text-primary-foreground">
-                  Most Popular
-                </div>
-              )}
-              <h2
-                id={tier.id}
-                className="text-xl sm:text-2xl font-bold tracking-tight text-foreground"
-              >
-                {tier.name}
-              </h2>
-              <p className="mt-3 sm:mt-4 text-sm leading-6 text-muted-foreground">
-                {tier.description}
-              </p>
-              <p className="mt-4 sm:mt-6 flex items-baseline gap-x-1">
-                <span className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
-                  {tier.price.monthly}
-                </span>
-                <span className="text-sm font-semibold leading-6 text-muted-foreground">
-                  /month
-                </span>
-              </p>
-              <Link
-                href={tier.href}
-                aria-describedby={tier.id}
-                className={`mt-4 sm:mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${tier.id === "professional"
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:outline-primary"
-                  : "bg-primary/10 text-primary hover:bg-primary/20 focus-visible:outline-primary"
-                  }`}
-              >
-                Begin Your Journey
-              </Link>
-              <ul
-                role="list"
-                className="mt-6 sm:mt-8 space-y-2.5 sm:space-y-3 text-sm leading-6 text-muted-foreground"
-              >
-                {tier.features.map((feature) => (
-                  <li key={feature} className="flex gap-x-3 items-start">
-                    <Check
-                      className="h-5 w-5 flex-shrink-0 text-primary mt-0.5"
-                      aria-hidden="true"
-                    />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="mx-auto mt-12 sm:mt-16 max-w-2xl text-center">
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Frequently Asked Questions
-          </h2>
-          <div className="mt-6 sm:mt-8 space-y-4 sm:space-y-6 text-left">
-            <div className="rounded-lg bg-card/50 p-4 sm:p-6">
-              <h3 className="font-semibold text-foreground">
-                How do I choose the right plan?
-              </h3>
-              <p className="mt-2 text-sm sm:text-base text-muted-foreground">
-                We recommend starting with the Beginner Path to understand basic Taoist theory and practices. As your understanding deepens, you can gradually upgrade to more advanced plans.
-              </p>
-            </div>
-            <div className="rounded-lg bg-card/50 p-4 sm:p-6">
-              <h3 className="font-semibold text-foreground">
-                How are the courses structured?
-              </h3>
-              <p className="mt-2 text-sm sm:text-base text-muted-foreground">
-                Each plan includes a systematic curriculum, progressing from theory to practical guidance. You can flexibly arrange your learning schedule according to your personal time.
-              </p>
-            </div>
-            <div className="rounded-lg bg-card/50 p-4 sm:p-6">
-              <h3 className="font-semibold text-foreground">
-                Can I change or cancel my plan?
-              </h3>
-              <p className="mt-2 text-sm sm:text-base text-muted-foreground">
-                Yes, you can upgrade or downgrade your plan at any time. For cancellations, please notify us 7 days in advance. Unused fees will be refunded proportionally.
-              </p>
+    <div className="container py-8 sm:py-12 animate-in">
+      {/* Hero Section */}
+      <section className="relative mb-12 sm:mb-16 overflow-hidden rounded-3xl">
+        <div className="relative h-[300px] sm:h-[400px]">
+          <Image
+            src="/images/pricing/hero.jpg"
+            alt="选择您的修行之路"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-background/50" />
+          <div className="absolute inset-0 flex items-center">
+            <div className="container px-4 sm:px-6">
+              <div className="max-w-[600px]">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  选择您的修行之路
+                </h1>
+                <p className="text-lg sm:text-xl text-muted-foreground">
+                  为每个阶段的修行者提供合适的成长计划
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Pricing Tiers */}
+      <section className="space-y-8">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {tiers.map((tier) => (
+            <div
+              key={tier.name}
+              className={cn(
+                "relative overflow-hidden rounded-3xl border bg-background p-8",
+                tier.popular && "border-primary shadow-lg"
+              )}
+            >
+              {tier.popular && (
+                <div className="absolute -right-20 top-8 rotate-45 bg-primary px-24 py-1 text-center text-sm text-primary-foreground">
+                  Most Popular
+                </div>
+              )}
+              <div className="relative h-[200px] -mx-8 -mt-8 mb-8 overflow-hidden">
+                <Image
+                  src={tier.image}
+                  alt={tier.name}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+              </div>
+              <div className="flex flex-col gap-6">
+                <div>
+                  <h3 className="text-2xl font-bold">{tier.name}</h3>
+                  <p className="text-sm text-muted-foreground">{tier.nameEn}</p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-3xl font-bold">{tier.price}</p>
+                  <p className="text-sm text-muted-foreground">{tier.description}</p>
+                </div>
+                <ul className="space-y-2 text-sm">
+                  {tier.features.map((feature) => (
+                    <li key={feature} className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-primary" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={tier.href}
+                  className={cn(
+                    buttonVariants(),
+                    tier.popular
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  )}
+                >
+                  开启修行之旅
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="mt-24 space-y-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center">常见问题</h2>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {faqs.map((faq) => (
+            <div
+              key={faq.question}
+              className="rounded-lg border bg-card p-6 shadow-sm"
+            >
+              <h3 className="font-semibold">{faq.question}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Need Help Section */}
+      <section className="mt-24 text-center">
+        <h2 className="text-2xl font-bold mb-4">需要帮助？</h2>
+        <p className="text-muted-foreground mb-8">
+          我们的客服团队随时为您解答疑问，帮助您选择最适合的修行计划。
+        </p>
+        <Link
+          href="/contact"
+          className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+        >
+          联系我们
+        </Link>
+      </section>
     </div>
   )
 } 

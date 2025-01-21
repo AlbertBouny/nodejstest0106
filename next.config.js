@@ -2,12 +2,10 @@ const { withContentlayer } = require("next-contentlayer");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: process.env.NODE_ENV === "development",
+  reactStrictMode: true,
+  swcMinify: true,
   images: {
-    domains: [
-      "avatars.githubusercontent.com",
-      "taoismzen.com",
-    ],
+    domains: ["images.unsplash.com"],
   },
   async redirects() {
     return [
