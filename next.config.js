@@ -6,15 +6,14 @@ const nextConfig = {
   images: {
     domains: [
       "avatars.githubusercontent.com",
-      "weijunext.com",
-      "smartexcel.cc",
+      "taoismzen.com",
     ],
   },
   async redirects() {
     return [
       {
         source: "/github",
-        destination: "https://github.com/weijunext/smart-excel-ai",
+        destination: "https://github.com/taoismzen",
         permanent: false,
       },
     ];

@@ -1,19 +1,19 @@
 import { SiteConfig } from "@/types/siteConfig"
 
 const baseSiteConfig = {
-  name: "Daoist Culture & Metaphysics",
+  name: "TaoismZen",
   description: "Explore the profound wisdom of Chinese Daoist culture, metaphysics, and divination arts.",
-  url: "https://daoistculture.com",
-  ogImage: "https://smartexcel.cc/og.jpg",
-  metadataBase: new URL("https://www.smartexcel.cc"),
-  keywords: ["SmartExcel", "ChatGPT", "Excel formulas", "Excel AI", "文心一言", "智谱"],
+  url: "https://taoismzen.com",
+  ogImage: "https://taoismzen.com/og.jpg",
+  metadataBase: new URL("https://taoismzen.com"),
+  keywords: ["TaoismZen", "Taoism", "Daoism", "Chinese culture", "metaphysics", "divination"],
   authors: [
     {
-      name: "weijunext",
-      url: "https://weijunext.com",
+      name: "taoismzen",
+      url: "https://taoismzen.com",
     }
   ],
-  creator: '@weijunext',
+  creator: '@taoismzen',
   themeColor: '#fff',
   icons: {
     icon: "/favicon.ico",
@@ -21,9 +21,9 @@ const baseSiteConfig = {
     apple: "/apple-touch-icon.png",
   },
   links: {
-    twitter: "https://twitter.com/daoistculture",
-    github: "https://github.com/daoistculture",
-    docs: "https://daoistculture.com/docs",
+    twitter: "https://twitter.com/taoismzen",
+    github: "https://github.com/taoismzen",
+    docs: "https://taoismzen.com/docs",
   },
 }
 

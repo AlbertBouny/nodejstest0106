@@ -5,9 +5,9 @@ import Image from "next/image"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Daoist Pathways - Exploring Taoist Wisdom | 道途之路 - 探索道家智慧",
+  title: "TaoismZen - Exploring Taoist Wisdom | 探索道家智慧",
   description: "Explore the rich traditions of Taoist philosophy and discover practical tools for self-understanding, and navigate your life with greater clarity and joy.",
-  keywords: "Taoism, Taoist wisdom, Chinese philosophy, Feng Shui, Ba Zi, Zi Wei Dou Shu, spiritual practices, self-discovery, 道教, 道家, 风水, 八字, 紫微斗数",
+  keywords: "TaoismZen, Taoism, Taoist wisdom, Chinese philosophy, Feng Shui, Ba Zi, Zi Wei Dou Shu, spiritual practices, self-discovery, 道教, 道家, 风水, 八字, 紫微斗数",
 }
 
 export default function HomePage() {
