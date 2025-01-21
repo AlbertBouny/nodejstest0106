@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowPathIcon, BeakerIcon, CloudIcon, FireIcon, HandRaisedIcon, SparklesIcon, SunIcon } from "@heroicons/react/24/outline";
 import { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -100,7 +101,15 @@ export default function ConceptsPage() {
   return (
     <div className="container max-w-6xl py-6 lg:py-10">
       {/* Hero Section */}
-      <div className="flex flex-col items-center space-y-4 text-center">
+      <div className="relative flex flex-col items-center space-y-4 text-center">
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/images/culture/concepts/chinese_philosophy_1.jpg"
+            alt="Taoist concepts background"
+            fill
+            className="object-cover opacity-20"
+          />
+        </div>
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl">
           Core Concepts of Taoism
         </h1>
@@ -111,20 +120,40 @@ export default function ConceptsPage() {
 
       {/* Introduction */}
       <section className="mt-16 rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-        <h2 className="text-2xl font-bold">Understanding Taoist Philosophy</h2>
-        <p className="mt-4 text-muted-foreground">
-          Taoist philosophy is built upon several interconnected concepts that provide a framework for understanding the nature of reality and our place within it. These concepts are not merely theoretical but are meant to be experienced and embodied in daily life.
-        </p>
+        <div className="grid gap-6 md:grid-cols-2">
+          <div>
+            <h2 className="text-2xl font-bold">Understanding Taoist Philosophy</h2>
+            <p className="mt-4 text-muted-foreground">
+              Taoist philosophy is built upon several interconnected concepts that provide a framework for understanding the nature of reality and our place within it. These concepts are not merely theoretical but are meant to be experienced and embodied in daily life.
+            </p>
+          </div>
+          <div className="relative h-48 md:h-full">
+            <Image
+              src="/images/culture/concepts/taoist_meditation_1.jpg"
+              alt="Taoist meditation"
+              fill
+              className="rounded-lg object-cover"
+            />
+          </div>
+        </div>
       </section>
 
       {/* Core Concepts */}
       <section className="mt-12 space-y-8">
         <h2 className="text-3xl font-bold">Essential Concepts</h2>
         <div className="grid gap-6 md:grid-cols-2">
-          {concepts.map((concept) => {
+          {concepts.map((concept, index) => {
             const Icon = concept.icon;
             return (
               <div key={concept.id} className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
+                <div className="relative h-40 w-full mb-4">
+                  <Image
+                    src={`/images/culture/concepts/concept_${index + 1}.jpg`}
+                    alt={concept.title}
+                    fill
+                    className="rounded-lg object-cover"
+                  />
+                </div>
                 <div className="flex items-center space-x-4">
                   <div className="rounded-full bg-primary/10 p-2">
                     <Icon className="h-6 w-6 text-primary" />
@@ -153,9 +182,21 @@ export default function ConceptsPage() {
       <section className="mt-12 space-y-4">
         <h2 className="text-3xl font-bold">Practical Application</h2>
         <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-          <p className="text-muted-foreground">
-            These concepts are not merely philosophical ideas but are meant to be applied in daily life. Through practices such as meditation, qigong, and mindful living, we can begin to embody these principles and experience their transformative power.
-          </p>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div>
+              <p className="text-muted-foreground">
+                These concepts are not merely philosophical ideas but are meant to be applied in daily life. Through practices such as meditation, qigong, and mindful living, we can begin to embody these principles and experience their transformative power.
+              </p>
+            </div>
+            <div className="relative h-48 md:h-full">
+              <Image
+                src="/images/culture/concepts/taoist_practice_1.jpg"
+                alt="Taoist practice"
+                fill
+                className="rounded-lg object-cover"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

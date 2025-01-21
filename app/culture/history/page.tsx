@@ -46,19 +46,19 @@ const keyFigures = [
     name: "Laozi (老子)",
     title: "Legendary Founder",
     description: "Traditional author of the Dao De Jing, considered the foundational text of Taoism.",
-    image: "/images/culture/laozi.jpg",
+    image: "/images/culture/history/chinese_temple_1.jpg",
   },
   {
     name: "Zhuangzi (庄子)",
     title: "Philosophical Pioneer",
     description: "Author of the Zhuangzi, known for his profound and often humorous philosophical insights.",
-    image: "/images/culture/zhuangzi.jpg",
+    image: "/images/culture/history/taoist_temple_2.jpg",
   },
   {
     name: "Zhang Daoling (张道陵)",
     title: "First Celestial Master",
     description: "Founder of the Way of the Celestial Masters, the first organized Taoist school.",
-    image: "/images/culture/zhang-daoling.jpg",
+    image: "/images/culture/history/ancient_chinese_architecture_3.jpg",
   },
 ];
 
@@ -66,7 +66,15 @@ export default function HistoryPage() {
   return (
     <div className="container max-w-6xl py-6 lg:py-10">
       {/* Hero Section */}
-      <div className="flex flex-col items-center space-y-4 text-center">
+      <div className="relative flex flex-col items-center space-y-4 text-center">
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/images/culture/history/taoist_temple_1.jpg"
+            alt="Ancient Taoist Temple"
+            fill
+            className="object-cover opacity-20"
+          />
+        </div>
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl">
           Tracing the Roots of Taoism: A Journey Through Time
         </h1>
