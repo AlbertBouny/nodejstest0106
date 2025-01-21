@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:mdx": "concurrently \"contentlayer dev\" \"next dev\"",
-    "build": "contentlayer build && next build",
+    "build": "prisma generate && contentlayer build && next build",
     "build:local": "contentlayer build && next build",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
