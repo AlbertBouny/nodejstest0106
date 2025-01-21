@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar";
-import SiteFooter from "@/components/site-footer";
+import { SiteFooter } from "@/components/site-footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
