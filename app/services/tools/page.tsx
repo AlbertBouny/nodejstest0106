@@ -5,8 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "在线工具 - Online Self-Service Tools | Basic Taoist Analysis Tools",
-  description: "探索我们的基础在线工具，体验八字和紫微斗数的入门分析。这些工具提供初步洞察，帮助您了解中国传统命理分析。",
+  title: "在线自助工具 - Online Self-Service Tools | Basic Taoist Analysis Tools",
+  description: "探索我们的基础在线工具，体验八字和紫微斗数的入门分析。这些工具提供初步洞察，仅供参考。",
   keywords: "在线工具,八字计算,紫微斗数,online tools,Ba Zi calculator,Zi Wei Dou Shu,basic analysis",
 }
 
@@ -14,42 +14,74 @@ const basicTools = [
   {
     title: "Basic Ba Zi Chart Generator",
     chinese: "基础八字图",
-    description: "Generate your Ba Zi chart showing your unique energetic map based on birth information",
-    disclaimer: "This tool provides a basic overview only and should not be used for major life decisions",
+    description: "Generate your Ba Zi chart showing your unique energetic map based on birth information. This tool provides a simplified view using only core principles.",
+    disclaimer: "This tool provides basic results for introductory purposes only and should not be used for major life decisions",
     icon: "/images/icons/chinese_calligraphy_1.jpg",
+    features: [
+      "View your Four Pillars chart",
+      "See basic element relationships",
+      "Understand chart structure"
+    ]
   },
   {
     title: "Basic Zi Wei Dou Shu Chart",
     chinese: "基础紫微斗数",
-    description: "Explore a simplified version of your Purple Star Astrology chart with twelve palace positions",
-    disclaimer: "For introductory purposes only - consult an expert for detailed analysis",
+    description: "Explore a simplified version of your Purple Star Astrology chart showing the twelve palaces and their basic positions.",
+    disclaimer: "For introductory learning only - consult an expert for meaningful analysis",
     icon: "/images/icons/chinese_calligraphy_2.jpg",
+    features: [
+      "View palace positions",
+      "See basic star placements",
+      "Learn chart layout"
+    ]
   },
   {
     title: "Simple Compatibility Check",
     chinese: "基础合婚",
-    description: "Basic evaluation of relationship dynamics using fundamental Ba Zi principles",
-    disclaimer: "This basic tool cannot capture the full complexity of relationships",
+    description: "Basic evaluation of relationship dynamics using fundamental Ba Zi principles. Not for making relationship decisions.",
+    disclaimer: "This basic tool cannot capture the complexity of relationships - for entertainment only",
     icon: "/images/icons/bagua_symbol_1.jpg",
+    features: [
+      "Basic element comparison",
+      "Simple harmony check",
+      "General overview only"
+    ]
   },
 ]
 
 const toolBenefits = [
   {
-    title: "Quick Overview",
-    description: "Get a basic understanding of your chart's structure",
+    title: "Learning Tool",
+    description: "Understand basic concepts and terminology",
     icon: "/images/icons/chinese_calligraphy_1.jpg",
   },
   {
-    title: "Learning Aid",
-    description: "Learn about the basic concepts and terminology",
+    title: "Quick Overview",
+    description: "See the structure of your basic chart",
     icon: "/images/icons/chinese_calligraphy_2.jpg",
   },
   {
     title: "First Step",
-    description: "Begin your journey into understanding these traditions",
+    description: "Begin exploring these traditions",
     icon: "/images/icons/bagua_symbol_1.jpg",
   },
+]
+
+const toolLimitations = [
+  "Uses simplified calculations and basic principles only",
+  "Cannot account for complex interactions or nuances",
+  "Not suitable for making important life decisions",
+  "Does not replace professional consultation",
+  "Limited to introductory insights only",
+  "May not reflect your unique circumstances"
+]
+
+const howToUse = [
+  "Select your desired basic tool from the options below",
+  "Enter your birth information accurately",
+  "Click 'Generate' to view your basic chart",
+  "Review the results with the understanding that they are limited",
+  "Consider booking a consultation for deeper insights"
 ]
 
 export default function ToolsPage() {
@@ -60,7 +92,7 @@ export default function ToolsPage() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/arts/chinese_astrology_1.jpg"
-            alt="在线工具"
+            alt="在线自助工具"
             fill
             className="object-cover brightness-50"
             priority
@@ -68,18 +100,18 @@ export default function ToolsPage() {
         </div>
         <div className="relative z-10 text-white">
           <h1 className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-6xl lg:leading-[1.1]">
-            Explore Our Basic Tools<br className="hidden sm:inline" />
-            for Introductory Insights
+            Take Your First Steps with<br className="hidden sm:inline" />
+            Our Basic Online Tools
           </h1>
           <p className="mt-4 max-w-[750px] text-center text-lg sm:text-xl">
-            Generate simple charts based on Ba Zi and Zi Wei Dou Shu principles
+            Explore simplified charts based on Ba Zi and Zi Wei Dou Shu principles
           </p>
           <div className="mt-4 rounded-lg bg-black/20 p-4 text-center text-sm">
-            <strong>Important Note:</strong> These tools provide basic insights only and are not substitutes for professional consultation
+            <strong>Important Notice:</strong> These tools provide basic results for introductory purposes only and are not substitutes for professional analysis
           </div>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Link href="#tools" className={cn(buttonVariants({ size: "lg" }))}>
-              Try Basic Tools
+              Explore Basic Tools
             </Link>
             <Link
               href="/services/consultation"
@@ -95,7 +127,7 @@ export default function ToolsPage() {
       <section id="introduction" className="mx-auto max-w-[800px] py-12 lg:py-24">
         <h2 className="mb-6 text-center text-3xl font-bold">What Can These Basic Online Tools Offer?</h2>
         <p className="mb-8 text-lg text-muted-foreground">
-          Our online tools provide a simple way to explore fundamental concepts from Ba Zi and Zi Wei Dou Shu. They generate basic charts using your birth details to offer a quick overview. While these tools can provide interesting insights, they have clear limitations and are not meant for detailed personal analysis.
+          We have created a selection of simplified online tools designed to introduce you to the basic concepts of Ba Zi and Zi Wei Dou Shu. While these tools can generate simple charts and provide high-level insights, they are intended for introductory purposes only and cannot replace the comprehensive analysis provided by our expert practitioners.
         </p>
         <div className="grid gap-6 md:grid-cols-3">
           {toolBenefits.map((benefit) => (
@@ -119,6 +151,23 @@ export default function ToolsPage() {
         </div>
       </section>
 
+      {/* How to Use Section */}
+      <section className="mx-auto max-w-[800px] py-12 lg:py-24">
+        <h2 className="mb-8 text-center text-3xl font-bold">How to Use Our Basic Tools</h2>
+        <div className="rounded-lg border p-6">
+          <ol className="list-inside space-y-4 text-muted-foreground">
+            {howToUse.map((step, index) => (
+              <li key={index} className="flex items-start gap-4">
+                <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-sm text-primary-foreground">
+                  {index + 1}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
       {/* Tools Section */}
       <section id="tools" className="mx-auto max-w-[1200px] py-12 lg:py-24">
         <h2 className="mb-12 text-center text-3xl font-bold">Available Basic Tools</h2>
@@ -139,6 +188,11 @@ export default function ToolsPage() {
               <p className="text-center text-muted-foreground">
                 {tool.description}
               </p>
+              <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground">
+                {tool.features.map((feature, index) => (
+                  <li key={index}>{feature}</li>
+                ))}
+              </ul>
               <div className="mt-2 rounded-lg bg-muted p-3">
                 <p className="text-center text-sm text-muted-foreground">
                   {tool.disclaimer}
@@ -155,22 +209,21 @@ export default function ToolsPage() {
         </div>
       </section>
 
-      {/* Disclaimer Section */}
+      {/* Limitations Section */}
       <section className="mx-auto max-w-[800px] py-12 lg:py-24">
+        <h2 className="mb-8 text-center text-3xl font-bold">Important Limitations of These Basic Tools</h2>
         <div className="rounded-lg border p-6">
-          <h2 className="mb-6 text-center text-2xl font-bold">Understanding Tool Limitations</h2>
-          <div className="space-y-4">
-            <p className="text-muted-foreground">
-              While our online tools can provide interesting insights, they have several important limitations:
-            </p>
-            <ul className="list-inside list-disc space-y-2 text-muted-foreground">
-              <li>They use simplified calculations and basic principles only</li>
-              <li>They cannot account for complex interactions and nuances</li>
-              <li>They lack the personalized guidance of an expert practitioner</li>
-              <li>They should not be used for making important life decisions</li>
-            </ul>
-            <p className="mt-6 text-muted-foreground">
-              For meaningful insights and personalized guidance, we strongly recommend booking a consultation with one of our expert practitioners.
+          <p className="mb-6 text-lg text-muted-foreground">
+            While these tools can provide interesting introductory insights, it is crucial to understand their limitations:
+          </p>
+          <ul className="list-inside list-disc space-y-4 text-muted-foreground">
+            {toolLimitations.map((limitation, index) => (
+              <li key={index}>{limitation}</li>
+            ))}
+          </ul>
+          <div className="mt-8 rounded-lg bg-muted p-4">
+            <p className="text-center text-sm font-semibold text-muted-foreground">
+              For meaningful insights and personalized guidance, we strongly recommend booking a consultation with our expert practitioners.
             </p>
           </div>
         </div>
@@ -188,13 +241,21 @@ export default function ToolsPage() {
             />
           </div>
           <div className="relative z-10 text-white">
-            <h2 className="mb-4 text-2xl font-bold">Want a More In-Depth Analysis?</h2>
+            <h2 className="mb-4 text-2xl font-bold">Ready to Explore Further?</h2>
             <p className="mb-6">
-              Book a consultation with our expert practitioners for personalized guidance and comprehensive insights
+              Take the next step with our expert practitioners for personalized guidance and comprehensive insights
             </p>
-            <Link href="/services/consultation" className={cn(buttonVariants({ size: "lg" }))}>
-              Explore Expert Consultations
-            </Link>
+            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+              <Link href="/services/consultation" className={cn(buttonVariants({ size: "lg" }))}>
+                Book a Consultation
+              </Link>
+              <Link
+                href="/blog"
+                className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+              >
+                Browse Resources
+              </Link>
+            </div>
           </div>
         </div>
       </section>
