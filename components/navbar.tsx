@@ -296,7 +296,15 @@ export function Navbar() {
             Taoist Wisdom
           </span>
         </Link>
-        <div className="flex flex-1 items-center justify-end space-x-4">
+
+        {/* Main Navigation */}
+        <nav className="hidden md:flex md:flex-1">
+          {mainNavItems.map((item) => (
+            <NavItem key={item.href} item={item} />
+          ))}
+        </nav>
+
+        <div className="flex items-center justify-end space-x-4">
           <button className="rounded-full p-2 hover:bg-accent">
             <Search className="h-5 w-5" />
           </button>
