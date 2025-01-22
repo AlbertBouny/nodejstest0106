@@ -1,27 +1,26 @@
 "use client"
 
 import { UserAuthForm } from "@/components/UserAuthForm"
-import { SignUpFormValues, signUpFormSchema } from "@/lib/validations/auth"
+import { signUpFormSchema, type SignUpFormValues } from "@/lib/validations/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
+import { toast } from "react-hot-toast"
 
 export default function SignUpPage() {
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpFormSchema),
   })
 
   const onSubmit = async (data: SignUpFormValues) => {
     try {
-      setIsLoading(true)
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
@@ -30,19 +29,15 @@ export default function SignUpPage() {
         body: JSON.stringify(data),
       })
 
-      const json = await response.json()
-
       if (!response.ok) {
-        throw new Error(json.error || "Something went wrong")
+        throw new Error("Registration failed")
       }
 
-      toast.success("Account created successfully!")
-      // Redirect to login page after successful registration
-      window.location.href = "/login"
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong")
-    } finally {
-      setIsLoading(false)
+      toast.success("Registration successful! Please sign in.")
+      router.push("/login")
+    } catch (error) {
+      console.error("Registration error:", error)
+      toast.error("Registration failed. Please try again.")
     }
   }
 
@@ -82,11 +77,11 @@ export default function SignUpPage() {
             </p>
           </div>
           <UserAuthForm
-            isLoading={isLoading}
+            isSignUp
+            isLoading={isSubmitting}
             onSubmit={handleSubmit(onSubmit)}
             register={register}
             errors={errors}
-            isSignUp
           />
           <p className="px-8 text-center text-sm text-muted-foreground">
             已有账号？{" "}
@@ -96,6 +91,17 @@ export default function SignUpPage() {
             >
               立即登录
             </Link>
+          </p>
+          <p className="px-8 text-center text-sm text-muted-foreground">
+            By clicking continue, you agree to our{" "}
+            <a href="/terms" className="hover:text-brand underline underline-offset-4">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a href="/privacy" className="hover:text-brand underline underline-offset-4">
+              Privacy Policy
+            </a>
+            .
           </p>
         </div>
       </div>

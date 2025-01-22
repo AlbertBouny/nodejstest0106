@@ -4,15 +4,34 @@ import { signIn } from "next-auth/react";
 import * as React from "react";
 
 import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { UserInfo } from "@/types/user";
 import { useRouter } from "next/navigation";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
+interface UserAuthFormProps {
+  className?: string;
   user?: UserInfo;
+  isLoading?: boolean;
+  isSignUp?: boolean;
+  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  register: any;
+  errors: any;
 }
 
-export function UserAuthForm({ className, user, ...props }: UserAuthFormProps) {
+export function UserAuthForm({
+  className,
+  user,
+  isLoading,
+  isSignUp,
+  onSubmit,
+  register,
+  errors,
+  ...props
+}: UserAuthFormProps) {
   const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false);
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
   const router = useRouter();
@@ -35,34 +54,122 @@ export function UserAuthForm({ className, user, ...props }: UserAuthFormProps) {
   };
 
   return (
-    <div className={cn("grid gap-3", className)} {...props}>
-      <button
-        type="button"
-        onClick={() => login("google")}
-        disabled={isGoogleLoading}
-        className="flex w-full items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors duration-200"
-      >
-        {isGoogleLoading ? (
-          <Icons.spinner className="h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.google className="h-4 w-4" />
-        )}
-        Continue with Google
-      </button>
-
-      <button
-        type="button"
-        onClick={() => login("github")}
-        disabled={isGitHubLoading}
-        className="flex w-full items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:outline-none focus:ring-2 focus:ring-[#24292F]/50 focus:ring-offset-2 transition-colors duration-200"
-      >
-        {isGitHubLoading ? (
-          <Icons.spinner className="h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.gitHub className="h-4 w-4" />
-        )}
-        Continue with GitHub
-      </button>
+    <div className={cn("grid gap-6", className)} {...props}>
+      <form onSubmit={onSubmit}>
+        <div className="grid gap-4">
+          {isSignUp && (
+            <>
+              <div className="grid gap-2">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
+                  id="firstName"
+                  placeholder="John"
+                  type="text"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  disabled={isLoading}
+                  {...register("firstName")}
+                />
+                {errors?.firstName && (
+                  <p className="text-sm text-red-500">{errors.firstName.message}</p>
+                )}
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
+                  id="lastName"
+                  placeholder="Doe"
+                  type="text"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  disabled={isLoading}
+                  {...register("lastName")}
+                />
+                {errors?.lastName && (
+                  <p className="text-sm text-red-500">{errors.lastName.message}</p>
+                )}
+              </div>
+            </>
+          )}
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              placeholder="name@example.com"
+              type="email"
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect="off"
+              disabled={isLoading}
+              {...register("email")}
+            />
+            {errors?.email && (
+              <p className="text-sm text-red-500">{errors.email.message}</p>
+            )}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              placeholder="••••••••"
+              type="password"
+              autoComplete={isSignUp ? "new-password" : "current-password"}
+              disabled={isLoading}
+              {...register("password")}
+            />
+            {errors?.password && (
+              <p className="text-sm text-red-500">{errors.password.message}</p>
+            )}
+          </div>
+          {isSignUp && (
+            <>
+              <div className="grid gap-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  placeholder="••••••••"
+                  type="password"
+                  autoComplete="new-password"
+                  disabled={isLoading}
+                  {...register("confirmPassword")}
+                />
+                {errors?.confirmPassword && (
+                  <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>
+                )}
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" {...register("terms")} />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  I accept the terms and conditions
+                </label>
+              </div>
+              {errors?.terms && (
+                <p className="text-sm text-red-500">{errors.terms.message}</p>
+              )}
+            </>
+          )}
+          {!isSignUp && (
+            <div className="flex items-center space-x-2">
+              <Checkbox id="rememberMe" {...register("rememberMe")} />
+              <label
+                htmlFor="rememberMe"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Remember me
+              </label>
+            </div>
+          )}
+          <Button disabled={isLoading}>
+            {isLoading && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            {isSignUp ? "Sign Up" : "Sign In"}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }

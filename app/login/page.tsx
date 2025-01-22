@@ -1,53 +1,45 @@
 "use client"
 
 import { UserAuthForm } from "@/components/UserAuthForm";
-import { LoginFormValues, loginFormSchema } from "@/lib/validations/auth";
+import { loginFormSchema, type LoginFormValues } from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
-    defaultValues: {
-      rememberMe: false,
-    },
   });
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      setIsLoading(true)
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
 
-      const json = await response.json()
-
-      if (!response.ok) {
-        throw new Error(json.error || "Something went wrong")
+      if (!result?.ok) {
+        throw new Error("Invalid credentials");
       }
 
-      toast.success("Logged in successfully!")
-      // Redirect to home page after successful login
-      window.location.href = "/"
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong")
-    } finally {
-      setIsLoading(false)
+      toast.success("Logged in successfully!");
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Invalid email or password");
     }
-  }
+  };
 
   return (
     <div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -85,7 +77,7 @@ export default function LoginPage() {
             </p>
           </div>
           <UserAuthForm
-            isLoading={isLoading}
+            isLoading={isSubmitting}
             onSubmit={handleSubmit(onSubmit)}
             register={register}
             errors={errors}
