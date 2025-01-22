@@ -1,9 +1,12 @@
 "use client";
 
 import { UserAccountHeader } from "@/components/UserAccountHeader";
+import { cn } from "@/lib/utils";
 import { UserInfo } from "@/types/user";
 import { ChevronDown, Globe, Menu, Search, User, X } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -257,24 +260,42 @@ const MobileNav = ({ isOpen, setIsOpen }: MobileNavProps) => {
   );
 };
 
-const Navbar = () => {
+export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const user = session?.user as UserInfo;
+  const { theme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
-        <div className="mr-4 flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2 font-bold">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 items-center">
+        <Link href="/" className="mr-6 flex items-center space-x-2">
+          <div className="relative h-8 w-8">
+            {/* SVG logo for light theme */}
+            <Image
+              src="/logo.svg"
+              alt="Taoist Wisdom Logo"
+              className={cn("absolute transition-opacity",
+                theme === "dark" ? "opacity-0" : "opacity-100"
+              )}
+              fill
+              priority
+            />
+            {/* PNG logo for dark theme */}
+            <Image
+              src="/logo.png"
+              alt="Taoist Wisdom Logo"
+              className={cn("absolute transition-opacity",
+                theme === "dark" ? "opacity-100" : "opacity-0"
+              )}
+              fill
+              priority
+            />
+          </div>
+          <span className="hidden font-bold sm:inline-block">
             Taoist Wisdom
-          </Link>
-          <nav className="hidden md:flex">
-            {mainNavItems.map((item) => (
-              <NavItem key={item.href} item={item} />
-            ))}
-          </nav>
-        </div>
+          </span>
+        </Link>
         <div className="flex flex-1 items-center justify-end space-x-4">
           <button className="rounded-full p-2 hover:bg-accent">
             <Search className="h-5 w-5" />
@@ -309,6 +330,6 @@ const Navbar = () => {
       <MobileNav isOpen={isOpen} setIsOpen={setIsOpen} />
     </header>
   );
-};
+}
 
 export default Navbar;
